@@ -19,8 +19,38 @@ os.chdir('/home/srogoz@ice.mpg.de/ulr-lab/Users/Sarah_saro7615/EXP1_GROUPSIZEand
 # if ant is NA but present not registered as having any interactions
 ###################
 # %% load xy-data
-# multindex
-colony_dir = 'processed/EXP1_colonies/a16-4_interpo_20250822.parquet'
+# .parquet, with no multindex, add (ant, frame) multindex
+´
+colony_directories = {"b16-1" : 'processed/EXP1_colonies/',
+                      "b16-2" : 'processed/EXP1_colonies/',
+                      "b16-3" : 'processed/EXP1_colonies/',
+                      "b16-4" : 'processed/EXP1_colonies/',
+                      "b16-5" : 'processed/EXP1_colonies/',
+                      "b16-6" : 'processed/EXP1_colonies/',
+                      "b16-7" : 'processed/EXP1_colonies/',
+                      "b16-8" : 'processed/EXP1_colonies/',
+                      "a16-1" : 'processed/EXP1_colonies/',
+                      "a16-2" : 'processed/EXP1_colonies/',
+                      "a16-3" : 'processed/EXP1_colonies/',
+                      "a16-4" : 'processed/EXP1_colonies/a16-4_interpo_20250822.parquet',
+                      "a16-5" : 'processed/EXP1_colonies/a16-5_interpo_20250825.parquet',
+                      "a16-6" : 'processed/EXP1_colonies/a16-6_interpo_20250826.parquet',
+                      "a16-7" : 'processed/EXP1_colonies/a16-7_interpo_20250826.parquet',
+                      "a16-8" : 'processed/EXP1_colonies/a16-8_interpo_20250827.parquet',
+                      "ba16-1" : 'processed/EXP1_colonies/ba16-1_interpo_20250827.parquet',
+                      "ba16-2" : 'processed/EXP1_colonies/ba16-2_interpo_20250827.parquet',
+                      "ba16-3" : 'processed/EXP1_colonies/ba16-3_interpo_20250828.parquet',
+                      "ba16-4" : 'processed/EXP1_colonies/',
+                      "ba16-5" : 'processed/EXP1_colonies/',
+                      "ba16-6" : 'processed/EXP1_colonies/',
+                      "ba16-7" : 'processed/EXP1_colonies/ba16-7_interpo_20250828.parquet',
+                      "ba16-8" : 'processed/EXP1_colonies/ba16-8_interpo_20250828.parquet',
+                      }
+                     
+##################
+#%%
+#colony_dir = 'processed/EXP1_colonies/ba16-8_interpo_20250828.parquet'
+colony_dir = colony_directories["ba16-8"]
 #os.path.isdir('processed/EXP1_colonies/a16-4_interpo_20250822.parquet')
 
 colony = pd.read_parquet(colony_dir)
@@ -28,7 +58,7 @@ colony = pd.read_parquet(colony_dir)
 ###
 # %% format colony: drop colony_name and multiindex ant and frame 
 
-colony = (colony.drop(columns =["colony"]).set_index(["frame","ant"]).sort_index())
+colony = (colony.drop(columns =["colony"]).set_index(["ant","frame"]).sort_index())
 
 ####################
 #%% vectorized version for faster running
@@ -50,7 +80,7 @@ def prepare_array (df):
         
     return coordinates, ants, frames
 #################
-# %% distance measure
+# %% step 2: definition distance measure
 
 def pairwise_distance(points):
     diff = points[:, np.newaxis, :] - points[np.newaxis, :, :]  # shape (n_ants, n_ants, 2)
@@ -59,7 +89,12 @@ def pairwise_distance(points):
     
 
 ###################
-# %%
+# %% runtime: max 5 min WORKING ONE!!!
+#INPUT: multindex(ant, frame)
+#OUTPUT: interactionmatrix:16x16xframes no col and row names
+# ants : col and row names
+#frames: number of frames
+
 def get_network_vec(df, interaction_threshold=0.002):
     coordinates, ants, frames = prepare_array(df)
     n_frames, n_ants, _= coordinates.shape
@@ -82,7 +117,7 @@ def get_network_vec(df, interaction_threshold=0.002):
     return interaction_matrix, ants, frames
         
 #####################
-#%%run 
+#%%run interaction_matrix in form of (ant, frame) multiindex dropped colony 
 interaction_matrix, ants, frames = get_network_vec(colony, interaction_threshold = 0.002)
 ###############
 #%%
@@ -106,11 +141,51 @@ plt.xlabel("Frame")
 plt.ylabel("Number of ants with NaN (x or y)")
 plt.grid(True)
 plt.show()
-######################
-#%%
-collapsed = interaction_matrix.sum(axis=2)
 
+######################
+#%% calculate time aggregated network for 12s taking the end of the matrix
+frames_12hs=10*60*60*12
+max_frames = interaction_matrix.shape[2]
+cut_off = max_frames-432000
+interaction_matrix_12hs = interaction_matrix[:,:,cut_off:max_frames]
+collapsed = interaction_matrix_12hs.sum(axis=2)
+
+
+
+# %% save networks
+
+from datetime import datetime
+
+today= datetime.today().strftime('%Y%m%d')
+
+filename = f"ba16-8_proxMatrInterpo_{today}.npy"
+
+filepath = f"processed/networks/{filename}"
+
+np.save(filepath, interaction_matrix)
 ###############
+#%% save collapsed network!
+
+today= datetime.today().strftime('%Y%m%d')
+
+filename2 = f"ba16-8_proxMatrInterpoCollap_{today}.npy"
+
+filepath2 = f"processed/networks/{filename2}"
+
+np.save(filepath2, collapsed)
+###############
+# %% SAVE PRESENT ANTS
+
+from datetime import datetime
+
+today= datetime.today().strftime('%Y%m%d')
+
+filename = f"ba16-8_present_ants_{today}.npy"
+
+filepath = f"processed/present_ants/{filename}"
+
+np.save(filepath, ants)
+################
 #%%
 
 import pandas as pd
@@ -158,35 +233,6 @@ def get_network(df, interaction_threshold):
         
          
 ############
-# %%
+# %% apply function
 interaction_matrix = get_network(colony, interaction_threshold)
 
-# %%
-#interaction_matrix[:,:,3000]
-#present_ants = colony.index.get_level_values('ant').unique()
-#os.path.isdir('processed/networks')
-############
-# %% save networks
-
-from datetime import datetime
-
-today= datetime.today().strftime('%Y%m%d')
-
-filename = f"a16-4_proxMatrInterpo_{today}.npy"
-
-filepath = f"processed/networks/{filename}"
-
-np.save(filepath, interaction_matrix)
-
-###############
-# %% SAVE PRESENT ANTS
-
-from datetime import datetime
-
-today= datetime.today().strftime('%Y%m%d')
-
-filename = f"b16-1_present_ants_{today}.npy"
-
-filepath = f"processed/present_ants/{filename}"
-
-np.save(filepath, present_ants)
