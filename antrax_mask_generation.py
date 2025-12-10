@@ -10,6 +10,7 @@ import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+import json
 ############
 ## get files with already done backgrounds
 os.chdir('/home/srogoz@ice.mpg.de/ulr-lab/Users/Sarah_saro7615/EXP2/')
@@ -18,26 +19,7 @@ bg_path = 'sarah_16bba_2_A_data/b16-3/parameters/backgrounds/background.png'
 mask_path = 'sarah_16bba_2_A_data/b16-3/parameters/masks/'
 background = cv2.imread(bg_path)
 
-############paint elipse
-#%%
-n_vertices= 136
 
-def get_colonyarea(background, colony_name):
-    drawing = False  # True if mouse is pressed
-    center = []  # Store center point
-    
-    
-    if event == cv2.EVENT_LBUTTONDOWN:
-        center.append((x, y))
-        drawing = True
-        # Draw a small circle at clicked point
-        cv2.circle(background, (x, y), 3, (0, 255, 0), -1)
-        
-    ##store mask 
-    #mask_name = f"{colony_name}/masks/roimask.png"
-    return center)
-    
-    
 ####################
 #%%
     
@@ -104,7 +86,7 @@ def get_colonyarea(background, colony_name):
 
 ################
 #%%
-get_colonyarea(background, colony_name)
+point_scaled=get_colonyarea(background, colony_name, display_scale)
 ################
 #%%rescale image to see all colonies
 #display_scale = 0.5  # e.g., 0.3–0.7 depending on your screen
@@ -168,20 +150,77 @@ def get_colonyarea(background, colony_name):
 
     cv2.destroyWindow(colony_name)
     return point
-########################
-#%%rescale background image to see all colonies: updated!
+
+################
+#%%collect inf background paths:
+os.chdir('/home/srogoz@ice.mpg.de/ulr-lab/Users/Sarah_saro7615/EXP1_GROUPSIZEandCOMPOSITION/')
+#list of bg_path_list of missing colony areas in EXP1
+bg_path_list= { "a16-7":'sarah_3216ab_6_inf_20240626_161959/a16-7/parameters/backgrounds/background.png',
+                "a16-8":'sarah_3216ab_6_inf_20240626_161959/a16-8/parameters/backgrounds/background.png',
+                "b16-7":'sarah_3216ab_6_inf_20240626_161959/b16-7/parameters/backgrounds/background.png',
+                "b16-8": 'sarah_3216ab_6_inf_20240626_161959/b16-8/parameters/backgrounds/background.png',
+                "ba16-7": 'sarah_3216ab_6_inf_20240626_161959/ba16-7/parameters/backgrounds/background.png',
+                "ba16-8": 'sarah_3216ab_6_inf_20240626_161959/ba16-8/parameters/backgrounds/background.png',
+                "a16-6": 'sarah_3216ab_5_inf_20240626_161922/a16-6/parameters/backgrounds/background.png',
+                "ba16-6": 'sarah_3216ab_5_inf_20240626_161922/ba16-6/parameters/backgrounds/background.png'
+                    
+   }
+    
+mask_path_list= { "a16-7":'sarah_3216ab_6_inf_20240626_161959/a16-7/parameters/masks/',
+                "a16-8": 'sarah_3216ab_6_inf_20240626_161959/a16-8/parameters/masks/',
+                "b16-7": 'sarah_3216ab_6_inf_20240626_161959/b16-7/parameters/masks/',
+                "b16-8": 'sarah_3216ab_6_inf_20240626_161959/b16-8/parameters/masks/',
+                "ba16-7": 'sarah_3216ab_6_inf_20240626_161959/ba16-7/parameters/masks/',
+                "ba16-8": 'sarah_3216ab_6_inf_20240626_161959/ba16-8/parameters/masks/',
+                "a16-6": 'sarah_3216ab_5_inf_20240626_161922/a16-6/parameters/masks/',
+                "ba16-6": 'sarah_3216ab_5_inf_20240626_161922/ba16-6/parameters/masks/'
+                    
+   }
+
+json_path_list= { "a16-7":'sarah_3216ab_6_inf_20240626_161959/a16-7/parameters/prmtrs.json',
+                "a16-8": 'sarah_3216ab_6_inf_20240626_161959/a16-8/parameters/prmtrs.json',
+                "b16-7": 'sarah_3216ab_6_inf_20240626_161959/b16-7/parameters/prmtrs.json',
+                "b16-8": 'sarah_3216ab_6_inf_20240626_161959/b16-8/parameters/prmtrs.json',
+                "ba16-7": 'sarah_3216ab_6_inf_20240626_161959/ba16-7/parameters/prmtrs.json',
+                "ba16-8": 'sarah_3216ab_6_inf_20240626_161959/ba16-8/parameters/prmtrs.json',
+                "a16-6": 'sarah_3216ab_5_inf_20240626_161922/a16-6/parameters/prmtrs.json',
+                "ba16-6": 'sarah_3216ab_5_inf_20240626_161922/ba16-6/parameters/prmtrs.json'
+                    
+   }
+
+########
+#%% pick colony 
+colony_name="a16-8"
+
+bg_path=bg_path_list[colony_name] 
+mask_path = mask_path_list[colony_name]
+json_path = json_path_list[colony_name]
+#bg_path = 'sarah_3216ab_5_inf_20240626_161922/ba16-6/parameters/backgrounds/background.png'
+#mask_path = 'sarah_3216ab_5_inf_20240626_161922/ba16-6/parameters/masks/'
+#json_path = 'sarah_3216ab_5_inf_20240626_161922/ba16-6/parameters/prmtrs.json'
 
 
+#########
+#%%parameters
+display_scale = 0.5  # e.g., 0.3–0.7 depending on your screen
 
 point = None
 dragging = False
 radius = 6        # how close the mouse must be to "grab" the point
-##
+
 #visible radius for exp2: cam2: 350:
-    #rscale: 
-visible_radius=int(round(350*0.5,0))
+#exp1 cam 5 inf a16-6: 325
+#exp1 cam 5 inf ba16-6: 328
+     
+scaled_radius=345
+visible_radius=int(round(scaled_radius*display_scale,0))
+
+########################
+#%%rescale background image to see all colonies: updated!
+
 
 def mouse_callback(event, x, y, flags, param):
+    
     global point, dragging
 
     if event == cv2.EVENT_LBUTTONDOWN:
@@ -202,12 +241,13 @@ def mouse_callback(event, x, y, flags, param):
         dragging = False
 
 
-def get_colonyarea(background, colony_name):
+def get_colonyarea(bg_path, colony_name, display_scale):
+    background = cv2.imread(bg_path)
     global point, dragging
     point = None
     dragging = False
 
-    display_scale = 0.5  # e.g., 0.3–0.7 depending on your screen
+    
     img_unscaled = background.copy()
     img = cv2.resize(img_unscaled, None, fx=display_scale, fy=display_scale)
 
@@ -236,9 +276,14 @@ def get_colonyarea(background, colony_name):
     point_scaled = [int(point[0] / display_scale), int(point[1] / display_scale)]
 
     return point_scaled
+################
+#%%
+point_scaled=get_colonyarea(bg_path, colony_name, display_scale)
 
+################
 #############
 #%% get vertices and get rscale and a and b 
+
 def get_vertices(center, visible_radius, n_vertices):
     cx, cy = center
     
@@ -256,7 +301,7 @@ def get_vertices(center, visible_radius, n_vertices):
     return (np.vstack((x, y)).T, r_scale_antrax)
 ############
 #%%
-vertices, r_scale = get_vertices(point, visible_radius, 136)
+vertices, r_scale = get_vertices(point_scaled, scaled_radius, 136)
 ########
 #%%create roimask.png and replace in path
 # openboundrymask.png automatically generated
@@ -282,14 +327,14 @@ def get_masks(visible_radius, center, mask_path, bg_path):
 
 ###########
 #%%
-get_masks(visible_radius,point, mask_path, bg_path)
+get_masks(scaled_radius, point_scaled, mask_path, bg_path)
 
 ###########
 #%% save parameters in prmtrs.json
 
-import json
 
-json_path = 'sarah_16bba_2_A_data/b16-3/parameters/prmtrs.json'
+
+
 
 def update_prmtrs_jsn(json_path, center, visible_radius, vertices, r_scale, out_path=None):
     
@@ -321,4 +366,4 @@ def update_prmtrs_jsn(json_path, center, visible_radius, vertices, r_scale, out_
     
 ##############
 #%%
-update_prmtrs_jsn(json_path, point, visible_radius, vertices, r_scale)
+update_prmtrs_jsn(json_path, point_scaled, scaled_radius, vertices, r_scale)
