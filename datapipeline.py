@@ -22,7 +22,8 @@ from get_vecnetworks import prepare_array, pairwise_distance, get_network_vec
 from find_continousNANruns import find_continuous_NAN_runs
 #reassign nan runs function
 from reassign_nan_runs import reassign_nan_runs
-
+# load all files for one colony import h5py
+from merge_files_per_colony import merge_files_for_colony
 ##########
 #%%
 #initialisting root base directory For EXP1
@@ -74,7 +75,8 @@ colony_directories = { #cam1
 expected_ants = ["BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", 
                    "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"]
 
-selected_colonies_16ants_10frames = ["a16-1", "a16-2", "a16-3", "a16-4",  "a16-6", "a16-7", "a16-8", "b16-1", "b16-3", "b16-4", "b16-5",  "b16-7", "b16-8",  "ba16-1",   "ba16-4", "ba16-5",  "ba16-8"]
+selected_colonies_16ants_10frames = ["a16-1", "a16-2", "a16-3", "a16-4",  "a16-6", "b16-1", "b16-3", "b16-4", "b16-5",  "b16-7", "ba16-1", "ba16-4", "ba16-5"]
+selected_colonies_16ants_5frames = [ "a16-7", "a16-8","b16-7", "b16-8","ba16-8"]
 selected_colonies_notfinished = ["b16-2", "ba16-2", "ba16-3","a16-5","b16-6", "ba16-6","ba16-7"]
 colony_names = ["a16-1", "a16-2", "a16-3", "a16-4", "a16-5", "a16-6", "a16-7", "a16-8", "b16-1", "b16-2", "b16-3", "b16-4", "b16-5", "b16-6", "b16-7", "b16-8",  "ba16-1", "ba16-2", "ba16-3", "ba16-4", "ba16-5", "ba16-6", "ba16-7", "ba16-8"]
 #distance for interpolation based on distance is one body length of an ant and 2 seconds
@@ -83,7 +85,7 @@ nanThreshold_t = 10 #change to 1s measured in frames
 
 today= datetime.today().strftime('%Y%m%d')
 ##############
-#%% find and sort all .mat files
+#%% find and sort all .mat files per colony
 sorted_files_per_colony = {}
 
 for colony_name in colony_names :
@@ -95,74 +97,11 @@ for colony_name in colony_names :
     sorted_files_per_colony [colony_name] = colony_files_sorted
 
 ####################
-#%% read and merge all .mat files in combined_colony_data--WORKING ONEE!!!!
-selected_colonies = ["a16-1"]
-selected_colony = selected_colonies[1]
-combined_colony_data = pd.DataFrame()
 
-
-for col in selected_colonies:
-    print(f"Working on {col}")
-   
-       
-    colony_files_sorted = sorted_files_per_colony[col]
-    current_max_frame = 0 
-     
-
-    for i, file_path in enumerate(colony_files_sorted) :
-        max_frames_in_this_file = 0 #frame number in this file
-          
-       
-        
-        for ant in expected_ants :
-           
-            with h5py.File(file_path, "r") as file:
-                    #print(list(file.keys()))
-                    if ant not in file:
-                        continue
-                    
-                    
-                  
-                    #load the ant specific data
-                    dataset = file[ant]
-                    antrax_data = pd.DataFrame(dataset[()])
-                    antrax_data = antrax_data.T
-                    #add ant metadata
-                    print(f"Shape of data for ant {ant} in colony {col} in {i}: {antrax_data.shape}")
-                    if antrax_data.shape[1] == 4:
-                       antrax_data.columns = ["x", "y", "orientation", "assignment_type"]
-                    else:
-                          print(f"Unexpected shape for {col}, {ant}, skipping...")
-                          continue  # skip to the next one
-                    antrax_data.columns = ["x", "y", "orientation", "assignment_type"]
-                    antrax_data.index.name ="frames"
-                    antrax_data ["colony"] = col
-                    antrax_data["ant"] = ant
-                    
-                     #overall frame counter
-                    num_frames = antrax_data.shape[0]
-                    antrax_data.index = range(current_max_frame, current_max_frame + num_frames)
-                    antrax_data.index.name = "frame"
-         
-                    # Track max number of frames seen
-                    max_frames_in_this_file = max(max_frames_in_this_file, antrax_data.shape[0])
-
-
-         
-                    # Add a column to track which file it came from (optional)
-                    antrax_data["source_file"] = i
-                    
-                    # Append to the combined dataframe
-                    combined_colony_data = pd.concat([combined_colony_data, antrax_data])
-        # Update for next run
-        current_max_frame += max_frames_in_this_file
-        
 ############
-#%% set multi-index "colony", "ant", keeps frame index as a multi  
-combined_colony_data.reset_index(inplace=True) 
-combined_colony_data.set_index(["colony", "ant", "frame"], inplace=True)
-combined_colony_data.sort_index(inplace= True)
-
+#%%
+selected_colony = "a16-3"
+combined_colony_data = merge_files_for_colony(selected_colony, colony_directories, expected_ants, colony_names)
 #######
 #%%assignmentrate per colony per ant
 
@@ -189,10 +128,6 @@ filepath = f"processed/assignment_rates_before_interpo_inf/{filename}"
 
 np.save(filepath, assignmentrate_percolony_perant) 
 #############################
-
-#########
-
-###########
 #%% apply run function
 all_nan_runs = []
 
@@ -207,7 +142,7 @@ result_continuous_nan_runs.set_index(["colony", "ant"], inplace=True)
 
 ########
 #%% interpolate na-runs
-combined_colony_data_interpolated, interpolation_summary, boundary_cases = reassign_nan_runs.reassign_nan_runs(
+combined_colony_data_interpolated, interpolation_summary, boundary_cases = reassign_nan_runs(
     combined_colony_data,
     result_continuous_nan_runs,
     selected_colonies,
@@ -218,7 +153,6 @@ combined_colony_data_interpolated, interpolation_summary, boundary_cases = reass
 
 #####################
 # %% adjust for multindexing leading to 1-16 being NA
-
 interpolation_summary_2 = interpolation_summary.iloc[0, 16:32]
 # save interpolation_summary
 filename = f"interpolation_summary_{selected_colony}_{today}.npy"
@@ -242,25 +176,6 @@ df_reset2.to_parquet(file_path2, index = False)
 #%%run interaction_matrix in form of (ant, frame) multiindex dropped colony 
 
 interaction_matrix, ants, frames = get_network_vec(combined_colony_data_interpolated, interaction_threshold = 0.002)
-
-############
-#%% assignmentrate per frame
-na_per_frame = colony[['x','y']].isna().any(axis=1)  # True if either x or y is NaN
-na_count = na_per_frame.groupby(level='frame').sum() 
-mean_assignmentrate = np.mean(na_count)
-sd_assignment = np.sqrt(np.var(na_count))
-###############
-#%%
-import matplotlib.pyplot as plt
-
-plt.figure(figsize=(14,6))
-plt.plot(na_count.index, na_count.values, marker='o')
-plt.title("Assignmentrate per fr ")
-plt.xlabel("Frame")
-plt.ylabel("Number of ants with NaN (x or y)")
-plt.grid(True)
-plt.show()
-
 
 #%%save networks and present ants
 filename1 = f"{selected_colony}_proxMatrInterpo_{today}.npy"

@@ -59,8 +59,34 @@ bg_path_list= { #cam3:
                 "B16-4":'sarah_16bba_3_A_data/bigb16-4/parameters/backgrounds/background.png',
                 "bB16-4": 'sarah_16bba_3_A_data/bB16-4/parameters/backgrounds/background.png',
                 "bA16-4": 'sarah_16bba_3_A_data/bA16-4/parameters/backgrounds/background.png',
-                "b16-5": 'sarah_16bba_3_A_data/b16-5/parameters/backgrounds/background.png'
-                  
+                "b16-5": 'sarah_16bba_3_A_data/b16-5/parameters/backgrounds/background.png',
+                #cam4:
+                "B16-6":'sarah_16bba_4_A_data/bigb16-6/parameters/backgrounds/background.png',
+                "b16-6":'sarah_16bba_4_A_data/b16-6/parameters/backgrounds/background.png',
+                "bA16-5":'sarah_16bba_4_A_data/bA16-5/parameters/backgrounds/background.png',
+                "bB16-5": 'sarah_16bba_4_A_data/bB16-5/parameters/backgrounds/background.png',
+                "B16-5": 'sarah_16bba_4_A_data/bigb-5/parameters/backgrounds/background.png',
+                 #cam5:
+                "bA16-8":'sarah_16bba_5_A_data/bA16-8/parameters/backgrounds/background.png',
+                "Bb16-8":'sarah_16bba_5_A_data/Bb16-8/parameters/backgrounds/background.png',
+                "B16-8":'sarah_16bba_5_A_data/B16-8/parameters/backgrounds/background.png',
+                "b16-8": 'sarah_16bba_5_A_data/smallb16-8/parameters/backgrounds/background.png',
+                #cam6 
+                 "bA16-7":'sarah_16bba_6_A_data/bA16-7/parameters/backgrounds/background.png',
+                 "B16-7":'sarah_16bba_6_A_data/bigB16-7/parameters/backgrounds/background.png',
+                 "Bb16-7":'sarah_16bba_6_A_data/Bb16-7/parameters/backgrounds/background.png',
+                 "b16-7": 'sarah_16bba_6_A_data/b16-7/parameters/backgrounds/background.png',
+                 "bA16-6": 'sarah_16bba_6_A_data/bA16-6/parameters/backgrounds/background.png',
+                 "bB16-6": 'sarah_16bba_6_A_data/bB16-6/parameters/backgrounds/background.png',
+                 
+                  #cam2:
+                  "Bb16-2":'sarah_16bba_2_A_data/Bb16-2/parameters/backgrounds/background.png',
+                  "B16-2":'sarah_16bba_2_A_data/bigb16-2/parameters/backgrounds/background.png',
+                  "b16-3":'sarah_16bba_2_A_data/b16-3/parameters/backgrounds/background.png',
+                  "bA16-2": 'sarah_16bba_2_A_data/bA16-2/parameters/backgrounds/background.png',
+                  "bB16-3": 'sarah_16bba_2_A_data/bB16-3/parameters/backgrounds/background.png',
+                  "B16-3": 'sarah_16bba_2_A_data/bigb16-3/parameters/backgrounds/background.png'
+                   
    }
     
 mask_path_list= { #cam3:
@@ -69,8 +95,34 @@ mask_path_list= { #cam3:
                 "B16-4":'sarah_16bba_3_A_data/bigb16-4/parameters/masks/',
                 "bB16-4": 'sarah_16bba_3_A_data/bB16-4/parameters/masks/',
                 "bA16-4": 'sarah_16bba_3_A_data/bA16-4/parameters/masks/',
-                "b16-5": 'sarah_16bba_3_A_data/b16-5/parameters/masks/'
+                "b16-5": 'sarah_16bba_3_A_data/b16-5/parameters/masks/',
+                 #cam4:
+                 "B16-6":'sarah_16bba_4_A_data/bigb16-6/parameters/masks/',
+                 "b16-6":'sarah_16bba_4_A_data/b16-6/parameters/masks/',
+                 "bA16-5":'sarah_16bba_4_A_data/bA16-5/parameters/masks/',
+                 "bB16-5": 'sarah_16bba_4_A_data/bB16-5/parameters/masks/',
+                 "B16-5": 'sarah_16bba_4_A_data/bigb-5/parameters/masks/',
+                  #cam5:
+                 "bA16-8":'sarah_16bba_5_A_data/bA16-8/parameters/masks/',
+                 "Bb16-8":'sarah_16bba_5_A_data/Bb16-8/parameters/masks/',
+                 "B16-8":'sarah_16bba_5_A_data/B16-8/parameters/masks/',
+                 "b16-8": 'sarah_16bba_5_A_data/smallb16-8/parameters/masks/',
+                 #cam6 
+                  "bA16-7":'sarah_16bba_6_A_data/bA16-7/parameters/masks/',
+                  "B16-7":'sarah_16bba_6_A_data/bigB16-7/parameters/masks/',
+                  "Bb16-7":'sarah_16bba_6_A_data/Bb16-7/parameters/masks/',
+                  "b16-7": 'sarah_16bba_6_A_data/b16-7/parameters/masks/',
+                  "bA16-6": 'sarah_16bba_6_A_data/bA16-6/parameters/masks/',
+                  "bB16-6": 'sarah_16bba_6_A_data/bB16-6/parameters/masks/',
                   
+                   #cam2:
+                   "Bb16-2":'sarah_16bba_2_A_data/Bb16-2/parameters/masks/',
+                   "B16-2":'sarah_16bba_2_A_data/bigb16-2/parameters/masks/',
+                   "b16-3":'sarah_16bba_2_A_data/b16-3/parameters/masks/',
+                   "bA16-2": 'sarah_16bba_2_A_data/bA16-2/parameters/masks/',
+                   "bB16-3": 'sarah_16bba_2_A_data/bB16-3/parameters/masks/',
+                   "B16-3": 'sarah_16bba_2_A_data/bigb16-3/parameters/masks/'
+                     
    }
 
 json_path_list= { #cam3:
@@ -79,14 +131,41 @@ json_path_list= { #cam3:
                 "B16-4":'sarah_16bba_3_A_data/bigb16-4/parameters/prmtrs.json',
                 "bB16-4": 'sarah_16bba_3_A_data/bB16-4/parameters/prmtrs.json',
                 "bA16-4": 'sarah_16bba_3_A_data/bA16-4/parameters/prmtrs.json',
-                "b16-5": 'sarah_16bba_3_A_data/b16-5/parameters/prmtrs.json'
+                "b16-5": 'sarah_16bba_3_A_data/b16-5/parameters/prmtrs.json',
+                #cam4:
+                "B16-6":'sarah_16bba_4_A_data/bigb16-6/parameters/prmtrs.json',
+                "b16-6":'sarah_16bba_4_A_data/b16-6/parameters/prmtrs.json',
+                "bA16-5":'sarah_16bba_4_A_data/bA16-5/parameters/prmtrs.json',
+                "bB16-5": 'sarah_16bba_4_A_data/bB16-5/parameters/prmtrs.json',
+                "B16-5": 'sarah_16bba_4_A_data/bigb-5/parameters/prmtrs.json',
+                 #cam5:
+                "bA16-8":'sarah_16bba_5_A_data/bA16-8/parameters/prmtrs.json',
+                "Bb16-8":'sarah_16bba_5_A_data/Bb16-8/parameters/prmtrs.json',
+                "B16-8":'sarah_16bba_5_A_data/B16-8/parameters/prmtrs.json',
+                "b16-8": 'sarah_16bba_5_A_data/smallb16-8/parameters/prmtrs.json',
+                #cam6 
+                 "bA16-7":'sarah_16bba_6_A_data/bA16-7/parameters/prmtrs.json',
+                 "B16-7":'sarah_16bba_6_A_data/bigB16-7/parameters/prmtrs.json',
+                 "Bb16-7":'sarah_16bba_6_A_data/Bb16-7/parameters/prmtrs.json',
+                 "b16-7": 'sarah_16bba_6_A_data/b16-7/parameters/prmtrs.json',
+                 "bA16-6": 'sarah_16bba_6_A_data/bA16-6/parameters/prmtrs.json',
+                 "bB16-6": 'sarah_16bba_6_A_data/bB16-6/parameters/prmtrs.json',
+                 
+                  #cam2:
+                  "Bb16-2":'sarah_16bba_2_A_data/Bb16-2/parameters/prmtrs.json',
+                  "B16-2":'sarah_16bba_2_A_data/bigb16-2/parameters/prmtrs.json',
+                  "b16-3":'sarah_16bba_2_A_data/b16-3/parameters/prmtrs.json',
+                  "bA16-2": 'sarah_16bba_2_A_data/bA16-2/parameters/prmtrs.json',
+                  "bB16-3": 'sarah_16bba_2_A_data/bB16-3/parameters/prmtrs.json',
+                  "B16-3": 'sarah_16bba_2_A_data/bigb16-3/parameters/prmtrs.json'
+                    
                   
    }
 
 
 ########
 #%% pick colony 
-colony_name="B16-4"
+colony_name="B16-7"
 
 bg_path=bg_path_list[colony_name] 
 mask_path = mask_path_list[colony_name]
