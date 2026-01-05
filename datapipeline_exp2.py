@@ -80,7 +80,7 @@ today= datetime.today().strftime('%Y%m%d')
 
 ##########
 #%%
-print(os.path.exists("processed/assignment_rates_before_interpo"))
+print(os.path.exists("processed/interpolation_summary"))
 ##############
 #%% find and sort all .mat files per colony
 sorted_files_per_colony = {}
@@ -154,7 +154,7 @@ for selected_colony in selected_colonies_round1:
     interpolation_summary_2 = interpolation_summary.iloc[0, 16:32]
     # save interpolation_summary
     filename = f"interpolation_summary_{selected_colony}_{today}.npy"
-    filepath = f"processed/interpolation_summary_inf/{filename}"
+    filepath = f"processed/interpolation_summary/{filename}"
     np.save(filepath, interpolation_summary_2) 
     
     
