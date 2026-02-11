@@ -64,6 +64,7 @@ present_ants_list<-list( "a16-1" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "
                          "ba16-7" = c("BB", "BG", "GB", "GG", "GO", "GP", "OB", "OG", "OP", "PB", "PG", "PO", "PP"),
                          "ba16-8" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP")
 )
+
 framerate<-list("a16-1" = 10,
                 "a16-2" = 10,
                 "a16-3" = 10,
@@ -133,6 +134,8 @@ genotype_match<-list("BB" = "b",
                      "PP" = "a")
 
 expected_ants= c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP")
+parameters <-c("total_number_interactions", "total_sum_of_interactions", "strength_mean", "strength_sd", "interaction_length_mean", "interaction_length_sd", "waiting_time_mean", "waiting_time_sd", "burstiness", "density_aggr", "global_eff", "assortativity", "mean_distance")
+
 #############################
 #CREATE EDGELISTS
 #############################
@@ -196,7 +199,7 @@ results_networkparameters_allintervalls<-data.frame(colony_name = NA,
 
 for (i in 1:length(selected_colonies)){
   
-  colony_name<-selected_colonies[[1]]
+  colony_name<-selected_colonies[[i]]
   framerate_col<-framerate[[colony_name]]
   present_ants<-present_ants_list[[colony_name]]
   duration<-interval_time*60*framerate_col
@@ -218,8 +221,8 @@ for (i in 1:length(selected_colonies)){
   
   for (j in 1:number_intervalls){
     #start and stop
-    time_window_start<-intervall_timepoints[10]
-    time_window_end<-intervall_timepoints[10+1]
+    time_window_start<-intervall_timepoints[j]
+    time_window_end<-intervall_timepoints[j+1]
     
     #limit to timeintervall
     network_obj_5<- network_obj[
@@ -388,11 +391,8 @@ for (i in 1:length(selected_colonies)){
   #cretae aggregated network with matching interaction-time filters
   prelim_agg_network<-aggregate_from_edgelist(network_obj_5)
   
-  #force empty entries of ants who are in theory present, but dont have any interactions in this time period
-  ants_with_contacts<-dim(prelim_agg_network[1])
-  if (ants_with_contacts!=length(present_ants)){
-
-   present_ants_numbers<-match(present_ants,expected_ants)
+  #force empty entries of ants who are in theory present, but dont have any interactions in this time period to have zero values! 
+  present_ants_numbers<-match(present_ants,expected_ants)
    aggregated_network <- matrix(
      0,
      nrow = length(present_ants_numbers),
@@ -401,7 +401,7 @@ for (i in 1:length(selected_colonies)){
    )
    aggregated_network[rownames(prelim_agg_network), colnames(prelim_agg_network)] <- prelim_agg_network
    
-  }
+  
 
   #matrix_dim<- max (dim(aggregated_network))
   #aggregated_network[,matrix_dim]<-t(aggregated_network[matrix_dim,])
@@ -614,5 +614,206 @@ write.csv(centrality_antlevel_df,
           file = paste0(folder_path_networkpara, "ANTLEVEL_allintervalls_centrality", timestamp, ".csv"),
           row.names = FALSE)
 ##########################
+
+##############################################
+#plot time component
+
+
+#read data
+results_networkparameters_allintervalls<-read.csv(file = "network_parameters/exp1_inf/5mins/ba16-8_network_parameters_allintervalls_10022026.csv")
+#remove NA line, first line
+results_networkparameters_allintervalls <-
+  results_networkparameters_allintervalls[-1, ]
+#sort data for glmm, add treatment line 
+df_networkparameters_allintervalls <- results_networkparameters_allintervalls %>%
+  mutate(
+    treatment = sub("\\d+.*$", "", colony_name)   # extract 'a', 'b', or 'ba'
+  )
+
+
+#plot time development of parameters
+
+treatment_colors<-c(
+  "a" = "#05e0fc",
+  "b" = "#fc0536",
+  "ba" = "#db05fc"
+)
+
+colony_colors <-c(
+  "a16-1" = "blue",
+  "a16-2" = "royalblue",
+  "a16-3" = "slateblue2",
+  "a16-4" = "navyblue",
+  "a16-5" = "lightblue2",
+  "a16-6" = "deepskyblue1",
+  "a16-7"="skyblue2",
+  "a16-8"="cyan",
+  
+  "b16-1" = "firebrick2",
+  "b16-2" = "red4",
+  "b16-3"= "tomato2",
+  "b16-4" = "indianred",
+  "b16-5" = "darkorange2",
+  "b16-6" = "sienna1",
+  "b16-7"="coral",
+  "b16-8"="lightsalmon",
+  
+  "ba16-1"= "darkviolet",
+  "ba16-2"="orchid2",
+  "ba16-3"="darkmagenta",
+  "ba16-4"="magenta1", 
+  "ba16-5"="deeppink1",
+  "ba16-6"="plum2",
+  "ba16-7"="violet",
+  "ba16-8"="hotpink2"
+)
+
+
+exposed_ants <-c(
+  "a16-1" = "OP",
+  "a16-2" = "BP",
+  "a16-3" = "OO",
+  "a16-4" = "BO",
+  "a16-5" = "OG",
+  "a16-6" = "BG",
+  "a16-7"= "OB",
+  "a16-8"= "BB",
+  "b16-1" = "PP",
+  "b16-2" = "GP",
+  "b16-3"= "PO",
+  "b16-4" = "GO",
+  "b16-5" = "PG",
+  "b16-6" = "GG",
+  "b16-7"= "PB",
+  "b16-8"= "GB",
+  "ba16-1"= "OP",
+  "ba16-2"="PP",
+  "ba16-3"="OG",
+  "ba16-4"="GO", 
+  "ba16-5"="GG",
+  "ba16-6"="PB",
+  "ba16-7"="GP",
+  "ba16-8"="BB"
+)
+
+
+
+
+
+ggplot(df_networkparameters_allintervalls,
+       aes(x = time_interval,
+           y = strength_mean,
+           color = colony_name,
+           group = treatment)) +
+  geom_point(size = 2) +
+  scale_color_manual(
+    values = colony_colors
+  ) +
+  geom_line(
+    alpha = 0.5
+  )+
+  labs(
+    x = "Time interval",
+    y = "Mean strength",
+    color = "Treatment"
+  ) +
+  theme_minimal()
+
+####################
+####################
+time development per treatment and per colony_colors
+treatments<-c("a", "b", "ba")
+folder_path_timeplots<-"network_parameter_plots/exp1_inf/5_mins/time_continuum/"
+for (param in parameters){
+  for (treat in treatments){
+    
+param_plot<-df_networkparameters_allintervalls |>
+  filter(treatment == treat) |>
+  ggplot(
+       aes(x = time_interval,
+           y = .data[[param]],
+           color = colony_name,
+           group = colony_name)) +
+  geom_point(size = 2) +
+  scale_color_manual(
+    values = colony_colors
+  ) +
+  geom_line(
+    alpha = 0.5
+  )+
+  labs(
+    x = "time [5min intervalls]",
+    y = param,
+    color = "Treatment"
+  ) +
+  theme_minimal()
+    
+    ggsave(
+      filename = paste0(folder_path_timeplots, "/", param,"_",treat, ".png"),
+      plot = param_plot,
+      width = 10,
+      height = 5,
+      dpi = 300
+    )
+  }
+}
+####################
+#overlay 
+####################
+
+for (param in parameters){
+summary_df <- df_networkparameters_allintervalls |>
+  group_by(treatment, time_interval) |>
+  summarise(
+    mean_val = mean(.data[[param]], na.rm = TRUE),
+    sd_val   = sd(.data[[param]], na.rm = TRUE),
+    n             = n(),
+    se_val   = sd_val / sqrt(n),
+    .groups = "drop"
+  )
+
+overlay_plot<-ggplot(summary_df,
+       aes(x = time_interval,
+           y = mean_val,
+           color = treatment,
+           fill  = treatment,
+           group = treatment)) +
+  geom_line(linewidth = 1) +
+  geom_ribbon(
+    aes(
+      ymin = mean_val - se_val,
+      ymax = mean_val + se_val
+    ),
+    alpha = 0.25,
+    color = NA
+  ) +
+  scale_color_manual(
+    values = treatment_colors
+  ) +
+  scale_fill_manual(
+    values = treatment_colors
+  ) +
+  labs(
+    x = "time [5min intervalls]",
+    y = param,
+    color = "Treatment",
+    fill  = "Treatment"
+  ) +
+  theme_minimal()
+
+ggsave(
+  filename = paste0(folder_path_timeplots, "/", param,"_","overlay.png"),
+  plot = overlay_plot,
+  width = 10,
+  height = 5,
+  dpi = 300
+)
+
+}
+###################
+#antlevel data
+###################
+#plot infected individual in another color
+
 
 
