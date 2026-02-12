@@ -1,0 +1,106 @@
+#################
+#GLOBAL PARAMETERS EXP1_12hs
+
+expected_ants= c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP")
+
+selected_colonies<-list(
+  "a16-1", "a16-2", "a16-3", "a16-4","a16-5","a16-6","a16-7", "a16-8",
+  "b16-1", "b16-2", "b16-3", "b16-4", "b16-5", "b16-6", "b16-7","b16-8",
+  "ba16-1","ba16-2", "ba16-3", "ba16-4", "ba16-5",  "ba16-6","ba16-7","ba16-8"
+)
+
+present_ants_list<-list( "a16-1" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                         "a16-2" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                         "a16-3" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                         "a16-4" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                         "a16-5" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                         "a16-6" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                         "a16-7" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                         "a16-8" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                         "b16-1" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                         "b16-2" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                         "b16-3" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                         "b16-4" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                         "b16-5" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO"),
+                         "b16-6" = c("BB", "BG", "BO", "BP", "GB", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                         "b16-7" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                         "b16-8" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                         "ba16-1" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OO", "PB", "PG", "PO", "PP"),
+                         "ba16-2" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                         "ba16-3" = c("BB", "BG", "BO", "BP", "GB", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                         "ba16-4" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                         "ba16-5" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                         "ba16-6" = c("BB", "BG", "BO", "BP", "GB", "GO", "OB", "OG", "OP", "PB", "PG", "PO", "PP"),
+                         "ba16-7" = c("BB", "BG", "GB", "GG", "GO", "GP", "OB", "OG", "OP", "PB", "PG", "PO", "PP"),
+                         "ba16-8" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP")
+)
+
+framerate<-list("a16-1" = 10,
+                "a16-2" = 10,
+                "a16-3" = 10,
+                "a16-4" = 10,
+                "a16-5" = 10,
+                "a16-6" = 10,
+                "b16-1" = 10,
+                "b16-2" = 10,
+                "b16-3" = 10,
+                "b16-4" = 10,
+                "b16-5" = 10,
+                "b16-6" = 10,
+                "ba16-1"= 10,
+                "ba16-2"= 10,
+                "ba16-3"= 10,
+                "ba16-4"= 10, 
+                "ba16-5"= 10,
+                "ba16-6"= 10,
+                "a16-7" = 5,
+                "a16-8" = 5,
+                "b16-7" = 5,
+                "b16-8" = 5,
+                "ba16-7"= 5,
+                "ba16-8"= 5)
+
+
+treatment_match<-list("a16-1" = "1",
+                      "a16-2" = "1",
+                      "a16-3" = "1",
+                      "a16-4" = "1",
+                      "a16-5" = "1",
+                      "a16-6" = "1",
+                      "a16-7" = "1",
+                      "a16-8" = "1",
+                      "b16-1" = "2", 
+                      "b16-2" = "2",
+                      "b16-3" = "2", 
+                      "b16-4" = "2", 
+                      "b16-5" = "2", 
+                      "b16-6" = "2",
+                      "b16-7" = "2",
+                      "b16-8" = "2",
+                      "ba16-1" = "3", 
+                      "ba16-2" = "3",
+                      "ba16-3" = "3",
+                      "ba16-4" = "3",
+                      "ba16-5" = "3",
+                      "ba16-6" = "3",
+                      "ba16-7" = "3",
+                      "ba16-8" = "3"
+)
+genotype_match<-list("BB" = "b",
+                     "BG" = "b",
+                     "BO" = "b",
+                     "BP" = "b",
+                     "GB" = "b",
+                     "GG" = "b", 
+                     "GO" = "b",
+                     "GP" = "b", 
+                     "OB" = "a",
+                     "OG" = "a",
+                     "OO" = "a",
+                     "OP" = "a",
+                     "PB" = "a",
+                     "PG" = "a",
+                     "PO" = "a",
+                     "PP" = "a")
+
+parameters <-c("total_number_interactions", "total_sum_of_interactions", "strength_mean", "strength_sd", "interaction_length_mean", "interaction_length_sd", "waiting_time_mean", "waiting_time_sd", "burstiness", "density_aggr", "global_eff", "assortativity", "mean_distance")
