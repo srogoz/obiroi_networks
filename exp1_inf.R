@@ -810,6 +810,8 @@ read_param_wide <- function(param) {
 }
 
 
+
+
 df_list <- lapply(antlevel_parameters, read_param_wide)
 
 df_wide <- Reduce(
@@ -845,6 +847,7 @@ eps <- 1e-6
 df_wide$centrality_beta <- pmin(
   pmax(df_wide$centrality, eps),
   1 - eps )
+ 
 
 model_c<- glmmTMB(
   centrality_beta ~ treatment + (1|colony),
@@ -868,7 +871,7 @@ plot(sim)
 AIC(model_c1)
 
 model_c2 <- glmmTMB(
-  centrality_beta ~ genotype*puremix + (1 | colony/ant),
+  centrality_beta ~ genotype*puremixed + (1 | colony/ant),
   data = df_wide,
   
   family = beta_family(link="probit")
@@ -923,7 +926,8 @@ plot(sim)
 
 
 AIC(model_gt4, model_gt3, model_gt2, model_gt)
-
+################################
+###################################
 emm_trt <- emmeans(model_gt, ~ genotype*puremixed)
 pairs(emm_trt, adjust = "tukey")
 

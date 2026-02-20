@@ -1,3 +1,5 @@
+###time sequence for infected in 5 min intervalls
+
 library(sna)
 library(tsna)
 #library(ndtv)
@@ -31,120 +33,155 @@ source("function_collection.R")
 expected_ants= c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP")
 
 selected_colonies<-list(
-  "a16-1", "a16-2", "a16-3", "a16-4","a16-5","a16-6","a16-7", "a16-8",
+  "B16-1", "B16-2", "B16-3", "B16-4","B16-5","B16-6","B16-7", "B16-8",
   "b16-1", "b16-2", "b16-3", "b16-4", "b16-5", "b16-6", "b16-7","b16-8",
-  "ba16-1","ba16-2", "ba16-3", "ba16-4", "ba16-5",  "ba16-6","ba16-7","ba16-8"
+  "bB16-1","bB16-2", "bB16-3", "bB16-4", "bB16-5","bB16-6","bB16-7","bB16-8",
+  "bA16-1","bA16-2", "bA16-3", "bA16-4", "bA16-5","bA16-6","bA16-7","bA16-8"
 )
-#present ants for EXP1_12hs
-present_ants_list<-list( "a16-1" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "a16-2" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "a16-3" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "a16-4" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "a16-5" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "a16-6" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "a16-7" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "a16-8" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "b16-1" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "b16-2" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "b16-3" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "b16-4" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "b16-5" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "b16-6" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "b16-7" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "b16-8" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "ba16-1" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "ba16-2" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "ba16-3" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "ba16-4" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "ba16-5" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "ba16-6" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "ba16-7" = c("BB", "BG", "GB", "GG", "GO", "GP", "OB", "OG", "OP", "PB", "PG", "PO", "PP"),
-                         "ba16-8" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP")
+
+
+
+present_ants_list<-list(  "B16-1" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "B16-2" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"), 
+                          "B16-3" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "B16-4" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "B16-5" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "B16-6" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "B16-7" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "B16-8" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          
+                          "b16-1" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "b16-2" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "b16-3" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "b16-4" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "b16-5" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "b16-6" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "b16-7" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "b16-8" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          
+                          "bB16-1" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "bB16-2" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "bB16-3" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "bB16-4" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "bB16-5" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "bB16-6" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "PB", "PG", "PO", "PP"), #15 OP IS MISSING
+                          "bB16-7" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "bB16-8" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          
+                          "bA16-1" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "bA16-2" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "bA16-3" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "bA16-4" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "bA16-5" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "bA16-6" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "bA16-7" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "bA16-8" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP")
 )
-framerate<-list("a16-1" = 10,
-                "a16-2" = 10,
-                "a16-3" = 10,
-                "a16-4" = 10,
-                "a16-5" = 10,
-                "a16-6" = 10,
-                "b16-1" = 10,
-                "b16-2" = 10,
-                "b16-3"= 10,
-                "b16-4" = 10,
-                "b16-5" = 10,
-                "b16-6" = 10,
-                "ba16-1"= 10,
-                "ba16-2"=10,
-                "ba16-3"=10,
-                "ba16-4"=10, 
-                "ba16-5"=10,
-                "ba16-6"=10,
-                "a16-7"=5,
-                "a16-8"=5,
-                "b16-7"=5,
-                "b16-8"=5,
-                "ba16-7"=5,
-                "ba16-8"=5)
 
 
-treatment_match<-list("a16-1" = "1",
-                      "a16-2" = "1",
-                      "a16-3" = "1",
-                      "a16-4" = "1",
-                      "a16-5" = "1",
-                      "a16-6" = "1",
-                      "a16-7" = "1",
-                      "a16-8" = "1",
-                      "b16-1" = "2", 
-                      "b16-2" = "2",
-                      "b16-3" = "2", 
-                      "b16-4" = "2", 
-                      "b16-5" = "2", 
-                      "b16-6" = "2",
-                      "b16-7" = "2",
-                      "b16-8" = "2",
-                      "ba16-1" = "3", 
-                      "ba16-2" = "3",
-                      "ba16-3" = "3",
-                      "ba16-4" = "3",
-                      "ba16-5" = "3",
-                      "ba16-6" = "3",
-                      "ba16-7" = "3",
-                      "ba16-8" = "3"
+framerate<-list(  "B16-1" =10,
+                  "B16-2" = 10,
+                  "B16-3" = 10,
+                  "B16-4"= 10,
+                  "B16-5"= 10,
+                  "B16-6" = 10,
+                  "B16-7" = 10,
+                  "B16-8" = 10,
+                  "b16-1"= 10,
+                  "b16-2"= 10,
+                  "b16-3" = 10,
+                  "b16-4"= 10,
+                  "b16-5"=10,
+                  "b16-6" = 10,
+                  "b16-7" = 10,
+                  "b16-8"=10,
+                  "bB16-1" =10,
+                  "bB16-2"=10,
+                  "bB16-3"=10,
+                  "bB16-4"=10,
+                  "bB16-5"=10,
+                  "bB16-6"=10,
+                  "bB16-7"=10,
+                  "bB16-8"=10,
+                  "bA16-1"=10,
+                  "bA16-2"=10,
+                  "bA16-3"=10,
+                  "bA16-4"=10,
+                  "bA16-5"=10,
+                  "bA16-6"=10,
+                  "bA16-7"=10,
+                  "bA16-8"=10)
+
+
+treatment_match<-list( "B16-1" = 1, 
+                       "B16-2" = 1,
+                       "B16-3" = 1,
+                       "B16-4" = 1,
+                       "B16-5" = 1,
+                       "B16-6" = 1,
+                       "B16-7" = 1,
+                       "B16-8" = 1,
+                       
+                       "b16-1" = 2,
+                       "b16-2" = 2,
+                       "b16-3" = 2,
+                       "b16-4" = 2,
+                       "b16-5" = 2,
+                       "b16-6" = 2,
+                       "b16-7" = 2,
+                       "b16-8" = 2,
+                       
+                       "bB16-1" = 3,
+                       "bB16-2" = 3,
+                       "bB16-3" = 3,
+                       "bB16-4" = 3,
+                       "bB16-5" = 3,
+                       "bB16-6" = 3,
+                       "bB16-7" = 3,
+                       "bB16-8" = 3,
+                       
+                       "bA16-1" = 4,
+                       "bA16-2" = 4,
+                       "bA16-3" = 4,
+                       "bA16-4" = 4,
+                       "bA16-5" = 4,
+                       "bA16-6" = 4,
+                       "bA16-7" = 4,
+                       "bA16-8" = 4
 )
-genotype_match<-list("BB" = "b",
-                     "BG" = "b",
-                     "BO" = "b",
-                     "BP" = "b",
-                     "GB" = "b",
-                     "GG" = "b", 
-                     "GO" = "b",
-                     "GP" = "b", 
-                     "OB" = "a",
-                     "OG" = "a",
-                     "OO" = "a",
-                     "OP" = "a",
-                     "PB" = "a",
-                     "PG" = "a",
-                     "PO" = "a",
-                     "PP" = "a")
+bA_match<-list("BB" = "b",
+               "BG" = "b",
+               "BO" = "b",
+               "BP" = "b",
+               "GB" = "b",
+               "GG" = "b", 
+               "GO" = "b",
+               "GP" = "b", 
+               "OB" = "a",
+               "OG" = "a",
+               "OO" = "a",
+               "OP" = "a",
+               "PB" = "a",
+               "PG" = "a",
+               "PO" = "a",
+               "PP" = "a")
 
-expected_ants= c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP")
-parameters <-c("total_number_interactions", "total_sum_of_interactions", "strength_mean", "strength_sd", "interaction_length_mean", "interaction_length_sd", "waiting_time_mean", "waiting_time_sd", "burstiness", "density_aggr", "global_eff", "assortativity", "mean_distance")
-
-#############################
-#CREATE EDGELISTS
-#############################
-#check number of frames
-
-for (i in 1:length(selected_colonies)){
-  network<-np$load(adjmatrix_list[[selected_colonies[[i]]]])
-  print(dim(network)[3])
-}
-########################
-#set truncation time for infected 75mins
-
-
+bB_match<-list("BB" = "b",
+               "BG" = "b",
+               "BO" = "b",
+               "BP" = "b",
+               "GB" = "b",
+               "GG" = "b", 
+               "GO" = "b",
+               "GP" = "b", 
+               "OB" = "a",
+               "OG" = "a",
+               "OO" = "a",
+               "OP" = "a",
+               "PB" = "a",
+               "PG" = "a",
+               "PO" = "a",
+               "PP" = "a")
 
 interval_time<-5
 number_intervalls<-15
@@ -157,9 +194,9 @@ number_intervalls<-15
 interaction_limit_min<-2
 interaction_limit_sec<-1
 
-source_folder_edgelist<-"edge_lists/exp1_12hs/"
-folder_path_networkpara <-"network_parameters/exp1_12hs/5_mins/106_120/"
-output_folder <- "network_parameter_plots/exp1_12hs/5_mins/"
+source_folder_edgelist<-"edge_lists/exp2_12hs/"
+folder_path_networkpara <-"network_parameters/exp2_12hs/5_mins/121_135/"
+output_folder <- "network_parameter_plots/exp2_12hs/5_mins/"
 timestamp <- format(Sys.time(), "%d%m%Y")
 
 #get network parameters
@@ -207,22 +244,22 @@ for (i in 1:length(selected_colonies)){
   #prepare network obj, interaction limits
   network_obj <-readRDS(network_obj_list[[colony_name]])
   
- ##adjust intervallsize for other timelines
+  ##adjust intervallsize for other timelines
   
   interval_size<-interval_time*60*framerate_col
   intervall_timepoints <- seq(
     from = 0,
     by   = interval_size,
     #number intervalls +1 (+time between)
-    length.out = number_intervalls + 107
+    length.out = number_intervalls + 121
   )
   
   for (j in 1:number_intervalls){
     #start and stop
     #j, add same length if later timeintervalls
-    time_window_start<-intervall_timepoints[j+107]
+    time_window_start<-intervall_timepoints[j+120]
     #j+1 add same length if later timeintervalls
-    time_window_end<-intervall_timepoints[j+108]
+    time_window_end<-intervall_timepoints[j+121]
     
     #limit to timeintervall
     network_obj_5<- network_obj[
@@ -759,8 +796,8 @@ ggplot(df_networkparameters_allintervalls,
 ####################
 #time development per treatment and per colony_colors
 
-treatments<-c("a", "b", "ba")
-folder_path_timeplots<-"network_parameter_plots/exp1_12hs/5_mins/time_continuum/overlays/"
+treatments<-c("B", "b", "bB", "bA")
+folder_path_timeplots<-"network_parameter_plots/exp2_12hs/5mins/time_continuum/overlays/"
 for (param in parameters){
   for (treat in treatments){
     
@@ -853,12 +890,12 @@ for (param in parameters){
 ###################
 library(patchwork)
 #read data
- files<-c("network_parameters/exp1_12hs/5_mins/1_15/ba16-8_network_parameters_allintervalls_11022026.csv", #first 75mins
-          "network_parameters/exp1_12hs/5_mins/16-30/ba16-8_network_parameters_allintervalls_11022026.csv", #2nd 75mins
-          "network_parameters/exp1_12hs/5_mins/106_120/ba16-8_network_parameters_allintervalls_11022026.csv", #after 10hs,
-          "network_parameters/exp1_12hs/5_mins/120_135/ba16-8_network_parameters_allintervalls_11022026.csv",#last 75mins after 11 hs 
-          "network_parameters/exp1_inf/5mins/ba16-8_network_parameters_allintervalls_10022026.csv"#infection data
-          )
+files<-c("network_parameters/exp2_12hs/5_mins/1_15/bA16-8_network_parameters_allintervalls_19022026.csv", #first 75mins
+         "network_parameters/exp2_12hs/5_mins/16_30/bA16-8_network_parameters_allintervalls_19022026.csv", #2nd 75mins
+         "network_parameters/exp2_12hs/5_mins/106_120/bA16-8_network_parameters_allintervalls_19022026.csv", #after 10hs,
+         "network_parameters/exp2_12hs/5_mins/121_135/bA16-8_network_parameters_allintervalls_19022026.csv",#last 75mins after 11 hs 
+         "network_parameters/exp2_inf/5mins/bA16-8_network_parameters_allintervalls_19022026.csv"#infection data
+)
 
 before_afterinfection<-lapply(files, read.csv)
 
@@ -867,7 +904,7 @@ before_afterinfection<-lapply(before_afterinfection, function(df){
   
   df<-df%>% mutate(
     treatment = sub("\\d+.*$", "", colony_name))   # extract 'a', 'b', or 'ba'
-    
+  
   df<-df%>%filter(time_interval != 15)
   
 })
@@ -890,34 +927,42 @@ before_afterinfection[[5]]<-before_afterinfection[[5]]%>%mutate(infection = "aft
 before_after_infection_merged<-bind_rows(before_afterinfection)
 
 ##filter datasets by treatment
-before_after_infection_a<-before_after_infection_merged %>% filter(treatment == "a")
 before_after_infection_b<-before_after_infection_merged %>% filter(treatment == "b")
-before_after_infection_ba<-before_after_infection_merged %>% filter(treatment == "ba")
+before_after_infection_B<-before_after_infection_merged %>% filter(treatment == "B")
+before_after_infection_bB<-before_after_infection_merged %>% filter(treatment == "bB")
+before_after_infection_bA<-before_after_infection_merged %>% filter(treatment == "bA")
 
 # look at each treatment seperately before and after infection for each parameter
 global_times<-c("until 1.25h", "1.25-2.5h","8.75h-10h", "10h-11.25h", "1.25h after pathogen exposure")
-global_times_colors_a<-c("until 1.25h" = "cyan", 
-                       "1.25-2.5h" = "slateblue2",
-                       "8.75h-10h" = "blue",
-                       "10h-11.25h" = "dodgerblue1",
-                       "1.25h after pathogen exposure"= "springgreen1")
+global_times_colors_b<-c("until 1.25h" = "brown", 
+                         "1.25-2.5h" = "burlywood4",
+                         "8.75h-10h" = "tan3",
+                         "10h-11.25h" = "chocolate",
+                         "1.25h after pathogen exposure"= "springgreen1")
 
 
-global_times_colors_b<-c("until 1.25h" = "firebrick2", 
-                       "1.25-2.5h" = "red4",
-                       "8.75h-10h" = "tomato2",
-                       "10h-11.25h" = "darkorange",
-                       "1.25h after pathogen exposure"= "springgreen1")
+global_times_colors_B<-c("until 1.25h" = "firebrick2", 
+                         "1.25-2.5h" = "red3",
+                         "8.75h-10h" = "tomato2",
+                         "10h-11.25h" = "brown2",
+                         "1.25h after pathogen exposure"= "springgreen1")
 
-global_times_colors_ba<-c("until 1.25h" = "darkviolet", 
-                       "1.25-2.5h" = "magenta",
-                       "8.75h-10h" = "plum2",
-                       "10h-11.25h" = "orchid",
-                       "1.25h after pathogen exposure"= "springgreen1")
+global_times_colors_bB<-c("until 1.25h" = "yellow", 
+                          "1.25-2.5h" = "orange",
+                          "8.75h-10h" = "wheat1",
+                          "10h-11.25h" = "khaki1",
+                          "1.25h after pathogen exposure"= "springgreen1")
+
+global_times_colors_bA<-c("until 1.25h" = "darkviolet", 
+                          "1.25-2.5h" = "magenta",
+                          "8.75h-10h" = "plum2",
+                          "10h-11.25h" = "orchid",
+                          "1.25h after pathogen exposure"= "springgreen1")
+
 
 for (param in parameters){
- 
-  summary_df <- before_after_infection_ba|>
+  
+  summary_df <- before_after_infection_b|>
     group_by(globaltime, time_interval) |>
     summarise(
       mean_val = mean(.data[[param]], na.rm = TRUE),
@@ -943,12 +988,12 @@ for (param in parameters){
       color = NA
     ) +
     scale_color_manual(
-      values = global_times_colors
+      values = global_times_colors_b
     ) +
     scale_fill_manual(
-      values = global_times_colors
+      values = global_times_colors_b
     ) +
-    coord_cartesian(ylim = c(100, 1300))+
+   # coord_cartesian(ylim = c(100, 1300))+
     labs(
       x = "time [5min intervalls]",
       y = param,
@@ -958,7 +1003,7 @@ for (param in parameters){
     theme_minimal()
   
   ggsave(
-    filename = paste0(folder_path_timeplots, "/comparison/", param,"_","overlaybeforeafterinf_ba.png"),
+    filename = paste0(folder_path_timeplots, "comparison/", param,"_","overlaybeforeafterinf_b.png"),
     plot = overlay_plot,
     width = 10,
     height = 5,
@@ -971,19 +1016,10 @@ for (param in parameters){
 #same plot of comparisons all in one
 ###########################
 
-c(100, 1300)
+c(100, 1000)
 for (param in parameters){
-  param <- "mean_distance"
+  param <- "strength_mean"
   
-  summary_a <- before_after_infection_a|>
-    group_by(globaltime, time_interval) |>
-    summarise(
-      mean_val = mean(.data[[param]], na.rm = TRUE),
-      sd_val   = sd(.data[[param]], na.rm = TRUE),
-      n             = n(),
-      se_val   = sd_val / sqrt(n),
-      .groups = "drop"
-    )
   summary_b <- before_after_infection_b|>
     group_by(globaltime, time_interval) |>
     summarise(
@@ -993,7 +1029,7 @@ for (param in parameters){
       se_val   = sd_val / sqrt(n),
       .groups = "drop"
     )
-  summary_ba <- before_after_infection_ba|>
+  summary_B <- before_after_infection_B|>
     group_by(globaltime, time_interval) |>
     summarise(
       mean_val = mean(.data[[param]], na.rm = TRUE),
@@ -1002,36 +1038,24 @@ for (param in parameters){
       se_val   = sd_val / sqrt(n),
       .groups = "drop"
     )
-  
-  comparisonplot_a<-ggplot(summary_a,
-                       aes(x = time_interval,
-                           y = mean_val,
-                           color = globaltime,
-                           fill  = globaltime,
-                           group = globaltime)) +
-    geom_line(linewidth = 1) +
-    geom_ribbon(
-      aes(
-        ymin = mean_val - se_val,
-        ymax = mean_val + se_val
-      ),
-      alpha = 0.25,
-      color = NA
-    ) +
-    scale_color_manual(
-      values = global_times_colors_a
-    ) +
-    scale_fill_manual(
-      values = global_times_colors_a
-    ) +
-    coord_cartesian(ylim = c(0, 100))+
-    labs(
-      x = "time [5min intervalls]",
-      y = param,
-      color = "timepoint",
-      fill  = "timepoint"
-    ) +
-    theme_minimal()
+  summary_bB <- before_after_infection_bB|>
+    group_by(globaltime, time_interval) |>
+    summarise(
+      mean_val = mean(.data[[param]], na.rm = TRUE),
+      sd_val   = sd(.data[[param]], na.rm = TRUE),
+      n             = n(),
+      se_val   = sd_val / sqrt(n),
+      .groups = "drop"
+    )
+  summary_bA <- before_after_infection_bA|>
+    group_by(globaltime, time_interval) |>
+    summarise(
+      mean_val = mean(.data[[param]], na.rm = TRUE),
+      sd_val   = sd(.data[[param]], na.rm = TRUE),
+      n             = n(),
+      se_val   = sd_val / sqrt(n),
+      .groups = "drop"
+    )
   
   comparisonplot_b<-ggplot(summary_b,
                            aes(x = time_interval,
@@ -1054,7 +1078,7 @@ for (param in parameters){
     scale_fill_manual(
       values = global_times_colors_b
     ) +
-    coord_cartesian(ylim = c(0, 100))+
+    coord_cartesian(ylim = c(100, 1000))+
     labs(
       x = "time [5min intervalls]",
       y = param,
@@ -1063,7 +1087,7 @@ for (param in parameters){
     ) +
     theme_minimal()
   
-  comparisonplot_ba<-ggplot(summary_ba,
+  comparisonplot_B<-ggplot(summary_B,
                            aes(x = time_interval,
                                y = mean_val,
                                color = globaltime,
@@ -1079,12 +1103,72 @@ for (param in parameters){
       color = NA
     ) +
     scale_color_manual(
-      values = global_times_colors_ba
+      values = global_times_colors_B
     ) +
     scale_fill_manual(
-      values = global_times_colors_ba
+      values = global_times_colors_B
     ) +
-    coord_cartesian(ylim = c(0, 100))+
+    coord_cartesian(ylim = c(100, 1000))+
+    labs(
+      x = "time [5min intervalls]",
+      y = param,
+      color = "timepoint",
+      fill  = "timepoint"
+    ) +
+    theme_minimal()
+  
+  comparisonplot_bB<-ggplot(summary_bB,
+                            aes(x = time_interval,
+                                y = mean_val,
+                                color = globaltime,
+                                fill  = globaltime,
+                                group = globaltime)) +
+    geom_line(linewidth = 1) +
+    geom_ribbon(
+      aes(
+        ymin = mean_val - se_val,
+        ymax = mean_val + se_val
+      ),
+      alpha = 0.25,
+      color = NA
+    ) +
+    scale_color_manual(
+      values = global_times_colors_bB
+    ) +
+    scale_fill_manual(
+      values = global_times_colors_bB
+    ) +
+    coord_cartesian(ylim = c(100, 1000))+
+    labs(
+      x = "time [5min intervalls]",
+      y = param,
+      color = "Time",
+      fill  = "Time"
+    ) +
+    theme_minimal()
+  
+  comparisonplot_bA<-ggplot(summary_bA,
+                            aes(x = time_interval,
+                                y = mean_val,
+                                color = globaltime,
+                                fill  = globaltime,
+                                group = globaltime)) +
+    geom_line(linewidth = 1) +
+    geom_ribbon(
+      aes(
+        ymin = mean_val - se_val,
+        ymax = mean_val + se_val
+      ),
+      alpha = 0.25,
+      color = NA
+    ) +
+    scale_color_manual(
+      values = global_times_colors_bA
+    ) +
+    scale_fill_manual(
+      values = global_times_colors_bA
+    ) +
+    coord_cartesian(ylim = c(100, 1000))+
     labs(
       x = "time [5min intervalls]",
       y = param,
@@ -1094,8 +1178,8 @@ for (param in parameters){
     theme_minimal()
   #combine into one plot with same legend
   
-  grid_plot<-(comparisonplot_a| comparisonplot_b| comparisonplot_ba) +
-    plot_layout(guides = "collect", axes = "collect_y" ) &
+  grid_plot<-(comparisonplot_b| comparisonplot_B| comparisonplot_bB|comparisonplot_bA) +
+    plot_layout(ncol=2,nrow=2, guides = "collect", axes = "collect_y" ) &
     theme(legend.position = "bottom")
   
   ggsave(
@@ -1105,6 +1189,8 @@ for (param in parameters){
     height = 5,
     dpi = 300
   )
+  
+  
   
 }
 
@@ -1151,7 +1237,7 @@ antlevel_files<-c("network_parameters/exp1_12hs/5_mins/1_15/ANTLEVEL_allinterval
                   "network_parameters/exp1_12hs/5_mins/106_120/ANTLEVEL_allintervalls_strength_mean11022026.csv",
                   "network_parameters/exp1_12hs/5_mins/120_135//ANTLEVEL_allintervalls_strength_mean11022026.csv",
                   "network_parameters/exp1_inf/5mins/ANTLEVEL_allintervalls_strength_mean10022026.csv" #infection
-                  )
+)
 
 antlevel_data_unmerged<-lapply(antlevel_files, read.csv)
 
@@ -1181,7 +1267,7 @@ antlevel_data<- antlevel_data_merged%>%
     names_to = "colony_name",
     values_to = "strength_mean"
   )%>%
- separate(colony_name,
+  separate(colony_name,
            into = c("colony", "time_interval", "globaltime"),
            sep = "_",
            remove = TRUE)%>%
@@ -1291,8 +1377,10 @@ ggsave(
 )
 
 ############################################
-#GLMM on network parameter change 
+#ANALYSING pre and post infection differences on colony level
+
 ############################################
+#mean over all time intervalls for all colonies
 mean_overtimes<-before_after_infection_merged%>%group_by(colony_name, globaltime,infection) %>%
   summarise(
     across(where(is.numeric), mean, na.rm = TRUE),
@@ -1304,97 +1392,49 @@ mean_overtimes<-mean_overtimes%>%group_by(colony_name,infection) %>%
     across(where(is.numeric), mean, na.rm = TRUE),
     .groups = "drop"
   )
-
 #long format for glmm delta_paramchange ~ treatment +(1|colony)
 
-delta <- mean_overtimes %>%
-  pivot_longer(
-    cols = -c(colony_name, infection),
-    names_to = "parameter",
-    values_to = "mean_value"
-  ) %>%
-  pivot_wider(
-    names_from = infection,
-    values_from = mean_value
-  ) %>%
-  mutate(delta = before - after)
-
-delta<-delta%>%mutate(
-  treatment = sub("\\d+.*$", "", colony_name))
-##NORMED delta vlaues
-delta<-delta%>%mutate(delta_norm = delta/before)
-
-delta_strength<-delta%>%filter(parameter=="strength_mean")
-hist(delta_strength$delta)
-
-##glmm for strength
-###################################
-model_delta_s<-glmmTMB(delta~treatment, 
-                       data = delta_strength,
-                       family = gaussian())
-
-sim <- DHARMa::simulateResiduals(model_delta_s)
-plot(sim)
-
-pairs <- emmeans(model_delta_s, pairwise ~ treatment, type = "response")
-stat_test <- pairs$contrasts
-stat_test
-#normed
-hist(delta_strength$delta_norm)
-model_delta_snorm<-glmmTMB(delta_norm~treatment, 
-                       data = delta_strength,
-                       family = gaussian())
-
-sim <- DHARMa::simulateResiduals(model_delta_snorm)
-plot(sim)
-
-
-pairs <- emmeans(model_delta_snorm, pairwise ~ treatment, type = "response")
-stat_test <- pairs$contrasts
-stat_test
-
-###########################
-#conserving all different timepoints before
-###########################
-mean_overtimes<-before_after_infection_merged%>%group_by(colony_name, globaltime,infection) %>%
-  summarise(
-    across(where(is.numeric), mean, na.rm = TRUE),
-    .groups = "drop"
-  )
-#mean over before and after infection
-mean_overtimes<-mean_overtimes%>%group_by(colony_name,infection, globaltime) %>%
-  summarise(
-    across(where(is.numeric), mean, na.rm = TRUE),
-    .groups = "drop"
-  )
-
-#long format for glmm delta_paramchange ~ treatment +(1|colony)
-
-delta <- mean_overtimes %>%
+prep_delta <- mean_overtimes %>%
   pivot_longer(
     cols = -c(colony_name, infection, globaltime),
     names_to = "parameter",
-    values_to = "mean_value"
+    values_to = "mean_value")
+  
+prep_delta_1<-prep_delta%>%filter(globaltime=="until 1.25h")
+prep_delta_2<-prep_delta%>%filter(globaltime=="1.25-2.5h")
+prep_delta_3<-prep_delta%>%filter(globaltime=="10h-11.25h")
+prep_delta_4<-prep_delta%>%filter(globaltime=="8.75h-10h")
+
+prep_delta_inf<-prep_delta%>%filter(globaltime=="1.25h after pathogen exposure")
+
+prep_delta_1<-prep_delta_1%>%mutate(delta = mean_value- prep_delta_inf$mean_value)
+prep_delta_1<-prep_delta_1%>%mutate(delta_norm = (mean_value- prep_delta_inf$mean_value)/mean_value)
+
+prep_delta_2<-prep_delta_2%>%mutate(delta = mean_value- prep_delta_inf$mean_value)
+prep_delta_2<-prep_delta_2%>%mutate(delta_norm = (mean_value- prep_delta_inf$mean_value)/mean_value)
+
+prep_delta_3<-prep_delta_3%>%mutate(delta = mean_value- prep_delta_inf$mean_value)
+prep_delta_3<-prep_delta_3%>%mutate(delta_norm = (mean_value- prep_delta_inf$mean_value)/mean_value)
+
+prep_delta_4<-prep_delta_4%>%mutate(delta = mean_value- prep_delta_inf$mean_value)
+prep_delta_4<-prep_delta_4%>%mutate(delta_norm = (mean_value- prep_delta_inf$mean_value)/mean_value)
+
+#
+prep_delta_all<-bind_rows(prep_delta_1, prep_delta_2, prep_delta_3, prep_delta_4)
+
+prep_delta_all<-prep_delta_all%>%mutate(treatment = sub("\\d+.*$", "", colony_name))
+
+delta_strength<-prep_delta_all%>%filter(parameter=="strength_mean"
   )
-%>%
-  pivot_wider(
-    names_from = infection,
-    values_from = mean_value
-  ) %>%
-  mutate(delta = before - after)
 
-delta<-delta%>%mutate(
-  treatment = sub("\\d+.*$", "", colony_name))
-##NORMED delta vlaues
-delta<-delta%>%mutate(delta_norm = delta/before)
 
-delta_strength<-delta%>%filter(parameter=="strength_mean")
-hist(delta_strength$delta)
+hist(delta_strength$delta_norm)
 
 ##glmm for strength
 ###################################
-model_delta_s<-glmmTMB(delta~treatment, 
+model_delta_s<-glmmTMB(delta_norm~treatment + (1|colony_name), 
                        data = delta_strength,
+                       dispformula = ~1,
                        family = gaussian())
 
 sim <- DHARMa::simulateResiduals(model_delta_s)
@@ -1403,16 +1443,30 @@ plot(sim)
 pairs <- emmeans(model_delta_s, pairwise ~ treatment, type = "response")
 stat_test <- pairs$contrasts
 stat_test
-#normed
-hist(delta_strength$delta_norm)
-model_delta_snorm<-glmmTMB(delta_norm~treatment, 
-                           data = delta_strength,
-                           family = gaussian())
 
-sim <- DHARMa::simulateResiduals(model_delta_snorm)
+########
+model_delta_s<-glmmTMB(delta~treatment + (1|colony_name), 
+                       data = delta_strength,
+                       dispformula = ~1,
+                       family = gaussian())
+
+sim <- DHARMa::simulateResiduals(model_delta_s)
 plot(sim)
 
+pairs <- emmeans(model_delta_s, pairwise ~ treatment, type = "response")
+stat_test <- pairs$contrasts
+stat_test
 
-pairs <- emmeans(model_delta_snorm, pairwise ~ treatment, type = "response")
+#for density
+hist(delta_density$delta)
+delta_density<-delta%>%filter(parameter=="density_aggr")
+model_delta_d<-glmmTMB(delta_norm~treatment, 
+                       data = delta_density,
+                       family = gaussian())
+
+sim <- DHARMa::simulateResiduals(model_delta_d)
+plot(sim)
+
+pairs <- emmeans(model_delta_d, pairwise ~ treatment, type = "response")
 stat_test <- pairs$contrasts
 stat_test

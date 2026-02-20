@@ -25,98 +25,131 @@ source("function_collection.R")
 
 #EXP1_12HS
 #list of adj-matrix files
-source_folder_adjmatrix<-"adj_matrix/exp1_12hs/"
-folder_edgelist<-"edge_lists/exp1_12hs/"
+source_folder_adjmatrix<-"adj_matrix/exp2_12hs/"
+folder_edgelist<-"edge_lists/exp2_12hs/"
 
 #######
 
 expected_ants= c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP")
 
 selected_colonies<-list(
-  "a16-1", "a16-2", "a16-3", "a16-4","a16-5","a16-6","a16-7", "a16-8",
+  "B16-1", "B16-2", "B16-3", "B16-4","B16-5","B16-6","B16-7", "B16-8",
   "b16-1", "b16-2", "b16-3", "b16-4", "b16-5", "b16-6", "b16-7","b16-8",
-  "ba16-1","ba16-2", "ba16-3", "ba16-4", "ba16-5",  "ba16-6","ba16-7","ba16-8"
+  "bB16-1","bB16-2", "bB16-3", "bB16-4", "bB16-5","bB16-6","bB16-7","bB16-8",
+  "bA16-1","bA16-2", "bA16-3", "bA16-4", "bA16-5","bA16-6","bA16-7","bA16-8"
 )
+
 adjmatrix_list<-get_colony_files(source_folder_adjmatrix, selected_colonies)
 
-present_ants_list<-list( "a16-1" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "a16-2" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "a16-3" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "a16-4" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "a16-5" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "a16-6" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "a16-7" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "a16-8" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "b16-1" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "b16-2" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "b16-3" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "b16-4" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "b16-5" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "b16-6" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "b16-7" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "b16-8" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "ba16-1" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "ba16-2" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "ba16-3" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "ba16-4" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "ba16-5" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "ba16-6" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "ba16-7" = c("BB", "BG", "GB", "GG", "GO", "GP", "OB", "OG", "OP", "PB", "PG", "PO", "PP"),
-                         "ba16-8" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP")
+present_ants_list<-list(  "B16-1" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "B16-2" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"), 
+                          "B16-3" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "B16-4" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "B16-5" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "B16-6" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "B16-7" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "B16-8" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                        
+                          "b16-1" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "b16-2" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "b16-3" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "b16-4" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "b16-5" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "b16-6" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "b16-7" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "b16-8" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          
+                          "bB16-1" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "bB16-2" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "bB16-3" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "bB16-4" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "bB16-5" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "bB16-6" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "PB", "PG", "PO", "PP"), #15 OP IS MISSING
+                          "bB16-7" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "bB16-8" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          
+                          "bA16-1" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "bA16-2" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "bA16-3" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "bA16-4" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "bA16-5" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "bA16-6" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "bA16-7" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
+                          "bA16-8" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP")
+                          )
+
+
+framerate<-list(  "B16-1" =10,
+                  "B16-2" = 10,
+                  "B16-3" = 10,
+                  "B16-4"= 10,
+                  "B16-5"= 10,
+                  "B16-6" = 10,
+                  "B16-7" = 10,
+                  "B16-8" = 10,
+                  "b16-1"= 10,
+                  "b16-2"= 10,
+                  "b16-3" = 10,
+                  "b16-4"= 10,
+                  "b16-5"=10,
+                  "b16-6" = 10,
+                  "b16-7" = 10,
+                  "b16-8"=10,
+                  "bB16-1" =10,
+                  "bB16-2"=10,
+                  "bB16-3"=10,
+                  "bB16-4"=10,
+                  "bB16-5"=10,
+                  "bB16-6"=10,
+                  "bB16-7"=10,
+                  "bB16-8"=10,
+                  "bA16-1"=10,
+                  "bA16-2"=10,
+                  "bA16-3"=10,
+                  "bA16-4"=10,
+                  "bA16-5"=10,
+                  "bA16-6"=10,
+                  "bA16-7"=10,
+                  "bA16-8"=10)
+
+
+treatment_match<-list( "B16-1" = 1, 
+                       "B16-2" = 1,
+                       "B16-3" = 1,
+                       "B16-4" = 1,
+                       "B16-5" = 1,
+                       "B16-6" = 1,
+                       "B16-7" = 1,
+                       "B16-8" = 1,
+                       
+                       "b16-1" = 2,
+                       "b16-2" = 2,
+                       "b16-3" = 2,
+                       "b16-4" = 2,
+                       "b16-5" = 2,
+                       "b16-6" = 2,
+                       "b16-7" = 2,
+                       "b16-8" = 2,
+                       
+                       "bB16-1" = 3,
+                       "bB16-2" = 3,
+                       "bB16-3" = 3,
+                       "bB16-4" = 3,
+                       "bB16-5" = 3,
+                       "bB16-6" = 3,
+                       "bB16-7" = 3,
+                       "bB16-8" = 3,
+                       
+                       "bA16-1" = 4,
+                       "bA16-2" = 4,
+                       "bA16-3" = 4,
+                       "bA16-4" = 4,
+                       "bA16-5" = 4,
+                       "bA16-6" = 4,
+                       "bA16-7" = 4,
+                       "bA16-8" = 4
 )
-framerate<-list("a16-1" = 10,
-                "a16-2" = 10,
-                "a16-3" = 10,
-                "a16-4" = 10,
-                "a16-5" = 10,
-                "a16-6" = 10,
-                "b16-1" = 10,
-                "b16-2" = 10,
-                "b16-3"= 10,
-                "b16-4" = 10,
-                "b16-5" = 10,
-                "b16-6" = 10,
-                "ba16-1"= 10,
-                "ba16-2"=10,
-                "ba16-3"=10,
-                "ba16-4"=10, 
-                "ba16-5"=10,
-                "ba16-6"=10,
-                "a16-7"=5,
-                "a16-8"=5,
-                "b16-7"=5,
-                "b16-8"=5,
-                "ba16-7"=5,
-                "ba16-8"=5)
-
-
-treatment_match<-list("a16-1" = "1",
-                      "a16-2" = "1",
-                      "a16-3" = "1",
-                      "a16-4" = "1",
-                      "a16-5" = "1",
-                      "a16-6" = "1",
-                      "a16-7" = "1",
-                      "a16-8" = "1",
-                      "b16-1" = "2", 
-                      "b16-2" = "2",
-                      "b16-3" = "2", 
-                      "b16-4" = "2", 
-                      "b16-5" = "2", 
-                      "b16-6" = "2",
-                      "b16-7" = "2",
-                      "b16-8" = "2",
-                      "ba16-1" = "3", 
-                      "ba16-2" = "3",
-                      "ba16-3" = "3",
-                      "ba16-4" = "3",
-                      "ba16-5" = "3",
-                      "ba16-6" = "3",
-                      "ba16-7" = "3",
-                      "ba16-8" = "3"
-)
-
-genotype_match<-list("BB" = "b",
+bA_match<-list("BB" = "b",
                      "BG" = "b",
                      "BO" = "b",
                      "BP" = "b",
@@ -133,6 +166,22 @@ genotype_match<-list("BB" = "b",
                      "PO" = "a",
                      "PP" = "a")
 
+bB_match<-list("BB" = "b",
+               "BG" = "b",
+               "BO" = "b",
+               "BP" = "b",
+               "GB" = "b",
+               "GG" = "b", 
+               "GO" = "b",
+               "GP" = "b", 
+               "OB" = "a",
+               "OG" = "a",
+               "OO" = "a",
+               "OP" = "a",
+               "PB" = "a",
+               "PG" = "a",
+               "PO" = "a",
+               "PP" = "a")
 
 #############################
 #CREATE EDGELISTS
@@ -146,7 +195,7 @@ for (i in 1:length(selected_colonies)){
 ########################
 #set truncation tiime
 
-truncationtime_5f<-216000
+
 truncationtime_10f<-432000
 for (i in 1:length(selected_colonies)){
   
@@ -160,21 +209,19 @@ for (i in 1:length(selected_colonies)){
   # transform into network object, undirected
   #reduce  all networks to 12hs: 432000 frames, starting from the end, account for difference in framerate
   
-  if (framerate[[selected_colonies[[i]]]]==10){
-    network_cut<-network[,,1:truncationtime_10f]}
-  else
-   { network_cut<-network[,,1:truncationtime_5f]}
-  
  
-network_obj <-make_edgelist(network_cut, expected_ants)
-
-#save edgelist
-timetag<-format(Sys.time(), "%d%m%Y")
-saveRDS(network_obj,
-        paste0(folder_edgelist ,colony_name, "_edgelist_", timetag, ".rds"))
-
-print(paste0(colony_name, " done"))
-
+    network_cut<-network[,,1:truncationtime_10f]
+  
+  
+  network_obj <-make_edgelist(network_cut, expected_ants)
+  
+  #save edgelist
+  timetag<-format(Sys.time(), "%d%m%Y")
+  saveRDS(network_obj,
+          paste0(folder_edgelist ,colony_name, "_edgelist_", timetag, ".rds"))
+  
+  print(paste0(colony_name, " done"))
+  
 }
 
 
@@ -187,20 +234,27 @@ interaction_limit_sec<-1
 #plots
 
 treatment_colors<-c(
-  "a" = "#05e0fc",
+  "bA" = "#db05fc",
   "b" = "#fc0536",
-  "ba" = "#db05fc"
+  "bB" = "orange",
+  "B" = "firebrick4"
 )
 
 # overview parameters
 parameters <-c("total_number_interactions", "total_sum_of_interactions", "strength_mean", "strength_sd", "interaction_length_mean", "interaction_length_sd", "waiting_time_mean", "waiting_time_sd", "burstiness", "density_aggr", "global_eff", "assortativity", "mean_distance")
-antlevel_parameters<-c("strength_mean", "burstiness", "waitingtime_mean", "centrality", "interactionlength_mean", "local_efficiency", "waitingtime_sd")
 
 #########
 #organisational
-source_folder_edgelist<-"edge_lists/exp1_12hs/"
-folder_path_networkpara <-"network_parameters/exp1_12hs/"
-output_folder <- "network_parameter_plots/exp1_12hs/"
+#clustering coefficient
+transitivity(
+  graph_aggregated,
+  type = "weighted",
+  weights = E(graph_aggregated)$weight,
+  isolates = c("zero")
+)
+source_folder_edgelist<-"edge_lists/exp2_12hs/"
+folder_path_networkpara <-"network_parameters/exp2_12hs/"
+output_folder <- "network_parameter_plots/exp2_12hs/"
 timestamp <- format(Sys.time(), "%d%m%Y")
 
 #get network parameters
@@ -247,8 +301,8 @@ for (i in 1:length(selected_colonies)){
       !network_obj_5$tail %in% missing_ants,
   ]
   
-
-
+  
+  
   #count how many interaction and percentages of frames ommited
   interaction_control <- setNames(
     data.frame(matrix(NA, nrow = length(selected_colonies), ncol = 6)),
@@ -386,7 +440,7 @@ for (i in 1:length(selected_colonies)){
   
   #cretae aggregated network with matching interaction-time filters
   aggregated_network<-aggregate_from_edgelist(network_obj_5)
-
+  
   
   #matrix_dim<- max (dim(aggregated_network))
   #aggregated_network[,matrix_dim]<-t(aggregated_network[matrix_dim,])
@@ -436,7 +490,7 @@ for (i in 1:length(selected_colonies)){
   # fill in values for ants that exist
   strength_full[names(strength_collection)] <- strength_collection
   
- #assign to collection
+  #assign to collection
   strength_antlevel_mean[[colony_name]]<-strength_full
   
   V(graph_aggregated)$strength <- strength(graph_aggregated, weights = E(graph_aggregated)$weight)
@@ -461,7 +515,7 @@ for (i in 1:length(selected_colonies)){
   local_eff<-round(local_eff*10000,2)
   
   #name local efficiency
- local_eff_collection <- setNames(
+  local_eff_collection <- setNames(
     c(local_eff),
     present_ants
   )
@@ -477,18 +531,18 @@ for (i in 1:length(selected_colonies)){
   
   #assign to collection
   local_efficiency[[colony_name]]<-local_eff_full
- 
+  
   #colony level: mean distance of total graph
   mean_distance<-mean_distance(
     graph_aggregated,
     weights = E(graph_aggregated)$weight,
     unconnected = TRUE,
     details = FALSE
-   
+    
   )
   
   # antlevel eigenvector-centrallity
- centrality<-eigen_centrality(
+  centrality<-eigen_centrality(
     graph_aggregated,
     directed = FALSE,
     scale = TRUE,
@@ -500,11 +554,11 @@ for (i in 1:length(selected_colonies)){
   centrality_collectiion<-centrality$vector
   
   centrality_collection<-setNames(
-   centrality$vector,
+    centrality$vector,
     present_ants
   )
   
- #pad to all expected ants
+  #pad to all expected ants
   centrality_full <- setNames(
     rep(NA_real_, length(expected_ants)),
     expected_ants
@@ -537,13 +591,13 @@ for (i in 1:length(selected_colonies)){
   waiting_times_5<-waiting_times_5[waiting_times_5$wt>0,,drop = FALSE]/framerate_col
   max_wt<- max(wait$wt)
   max_wt_5<- max(waiting_times_5$wt)
- 
+  
   waiting_time_mean<-mean(unlist(waiting_times_5))
   waiting_time_sd<-sd(unlist(waiting_times_5))
   #burstyness
   burstiness<-(waiting_time_sd-waiting_time_mean)/(waiting_time_sd+waiting_time_mean)
   
- #################
+  #################
   #collect and write result_networkparameters
   results_networkparameters<-data.frame(colony_name = colony_name,
                                         number_ants = number_ants, 
@@ -560,7 +614,7 @@ for (i in 1:length(selected_colonies)){
                                         global_eff=global_eff,
                                         mean_distance = mean_distance,
                                         burstiness = burstiness
-                                      
+                                        
   )
   #add timestamp and folder and save
   write.csv(results_networkparameters,
@@ -599,9 +653,9 @@ write.csv(centrality_antlevel_df,
 
 ##########################
 ##%%read network parameters
-source_folder_networkpara <-"network_parameters/exp1_12hs/"
-folder_path_networkplots <-"network_parameter_plots/exp1_12hs/"
-folder_path_qqplots<-"network_parameter_plots/exp1_12hs/STATS/qqplots/"
+source_folder_networkpara <-"network_parameters/exp2_12hs/"
+folder_path_networkplots <-"network_parameter_plots/exp2_12hs/"
+folder_path_qqplots<-"network_parameter_plots/exp2_12hs/STATS/qqplots/"
 
 network_parameter_list<-get_colony_files(source_folder_networkpara, selected_colonies)
 network_parameter_collected<-list()
@@ -614,12 +668,10 @@ for (i in 1:length(selected_colonies)){
 ###adjust treatment and replicates
 #treatments a,b,ba
 
-network_parameter_collected_with_treatment<-data.frame(treatment = rep(c("a", "b", "ba"), each = 8), replicate = rep(1:8, times = 3))
+network_parameter_collected_with_treatment<-data.frame(treatment = rep(c("B", "b", "bB", "bA"), each = 8), replicate = rep(1:8, times = 4))
 
 network_parameter_complete<-data_frame(network_parameter_collected_with_treatment, network_parameter_collected)
-#treatment only b, a 
-network_parameter_ab<-network_parameter_complete %>%
-  filter(treatment != "ba")
+
 ########################
 ##TEST FOR NORMAL DISTRIBUTION
 ##null hypothesis to Shapiro Wilks:
@@ -673,7 +725,7 @@ for (para in parameters) {
   }
 }
 
-folder_colonylevel_qqplots<-"network_parameter_plots/exp1_12hs/STATS/qqplots/"
+folder_colonylevel_qqplots<-"network_parameter_plots/exp2_12hs/STATS/qqplots/"
 anova_pvals <- list()
 posthoc_tests <- list()
 
@@ -735,6 +787,10 @@ for (param in parameters){
 ########################
 #GLMM ON ANTLEVEL
 ########################
+
+##let dharma decide
+sim <- DHARMa::simulateResiduals(model)
+plot(sim)
 
 
 antlevel_parameters<-c("strength_mean", "burstiness", "waitingtime_mean", "centrality", "interactionlength_mean")
@@ -851,13 +907,25 @@ df_wide <- df_wide |>
     puremixed = ifelse(treatment == "ba", "m", "p")
   )
 
+#########
+#check distributions
+##
+distribution_families<-list("centrality"= "beta_family()", #(from 0-1) with peak at 1 does not allow for 1, move by eps very small 
+                            "burstiness" = "gaussian()",
+                            "strength_mean" = "Gamma(link = "log")",
+                            "waitingtime_mean" = "Gamma(link = "log")",
+                            "strength_mean"= "Gamma(link = "log")",
+                            "interaction_length"= "mean"
+                            
+)
+
 #plot histograms of the colonylevel parameters
 
 for (param in antlevel_parameters){
-png(file=paste0("network_parameter_plots/exp1_12hs/antlevel/hist/",param, ".png"),
-    width=600, height=350)
-hist(df_wide[[param]], xlab = param, col = "purple", main= "")
-dev.off()
+  png(file=paste0("network_parameter_plots/exp1_12hs/antlevel/hist/",param, ".png"),
+      width=600, height=350)
+  hist(df_wide[[param]], xlab = param, col = "purple", main= "")
+  dev.off()
 }
 
 
@@ -869,31 +937,77 @@ eps <- 1e-6
 df_wide$centrality_beta <- pmin(
   pmax(df_wide$centrality, eps),
   1 - eps )
-  
-df_wide$centrality_trafo<-1-df_wide$centrality_beta
 
-model_c <- glmmTMB(
-  centrality_trafo ~ genotype*puremixed + (1 | colony),
+model <- glmmTMB(
+  centrality_beta ~ treatment + (1|colony),
   data = df_wide,
-ziformula = ~0,#
-dispformula = ~1,
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = beta_family()
+)
+
+model1 <- glmmTMB(
+  centrality_beta ~ treatment + (1 | colony/ant) ,
+  data = df_wide,
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = beta_family()
+)
+
+model_gt <- glmmTMB(
+  centrality_beta ~ genotype*puremixed + (1 | colony/ant),
+  data = df_wide,
+  
   family = beta_family()
   #family = beta_family(link = "cloglog")
 )
 
-sim <- DHARMa::simulateResiduals(model_c)
+model_gt <- glmmTMB(
+  centrality_beta ~ genotype*puremixed + (1 | colony/ant),
+  data = df_wide,
+  family = beta_family(link = "probit")
+)
+
+
+model_gt2 <- glmmTMB(
+  centrality_beta ~ genotype+puremixed + (1 | colony/ant),
+  data = df_wide,
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = beta_family()
+)
+
+sim <- DHARMa::simulateResiduals(model_gt2)
+plot(sim)
+
+model_gt3 <- glmmTMB(
+  centrality_beta ~ genotype + (1 | colony/ant),
+  data = df_wide,
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = beta_family(link ="probit")
+)
+
+sim <- DHARMa::simulateResiduals(model_gt3)
+plot(sim)
+
+AIC(model_gt3)
+
+
+model_gt4 <- glmmTMB(
+  centrality_beta ~ puremixed + (1 | colony/ant),
+  data = df_wide, 
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = beta_family()
+)
+
+sim <- DHARMa::simulateResiduals(model_gt4)
 plot(sim)
 
 
-drop1(model_c, test = "Chisq")
-
+AIC(model_gt4, model_gt3, model_gt2, model_gt)
 
 emm_trt <- emmeans(model_gt, ~ genotype*puremixed)
 pairs(emm_trt, adjust = "tukey")
 
-emmeans(model_c, pairwise ~ genotype | puremixed)
-emmeans(model_c, pairwise ~ puremixed | genotype)
-emmeans(model_c, pairwise ~ genotype)
+emmeans(model_gt, pairwise ~ genotype | puremixed)
+emmeans(model_gt, pairwise ~ puremixed | genotype)
 
 
 
@@ -901,16 +1015,25 @@ emmeans(model_c, pairwise ~ genotype)
 pairs <- emmeans(model_gt2, pairwise ~ genotype*puremixed, type = "response")
 stat_test <- pairs$contrasts
 
-###############
-#Burstiness
-###############
-
-
+############
+#strength
+############
 
 model_b <- glmmTMB(
-  burstiness ~ genotype*puremixed + (1|colony),
+  burstiness ~ genotype*puremixed + (1|colony/ant),
   data = df_wide,
-  #dispformula = ~1,
+  family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  
+)
+
+sim <- DHARMa::simulateResiduals(model_b)
+plot(sim)
+
+BIC(model_b)
+
+model_b <- glmmTMB(
+  burstiness ~ treatment+ (1|colony),
+  data = df_wide,
   family = gaussian()# 'ensures is positive', right skewed (link = log)
   
 )
@@ -918,165 +1041,57 @@ model_b <- glmmTMB(
 sim <- DHARMa::simulateResiduals(model_b)
 plot(sim)
 
-drop1(model_b, test = "Chisq")
+AIC(model_b)
 
-model_b_nointeraction <- glmmTMB(
-  burstiness ~ genotype+puremixed + (1|colony),
+pairs <- emmeans(model_b, pairwise ~ genotype*puremixed, type = "response")
+stat_test <- pairs$contrasts
+
+
+model_b2 <- glmmTMB(
+  burstiness ~ genotype+puremixed + (1|colony/ant),
   data = df_wide,
-
-  family = gaussian()# 'ensures is positive', right skewed (link = log)
+  family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
   
 )
 
-sim <- DHARMa::simulateResiduals(model_b_nointeraction)
+sim <- DHARMa::simulateResiduals(model_b2)
 plot(sim)
 
-drop1(model_b, test = "Chisq")
+model_b3<- glmmTMB(
+  burstiness ~ genotype + (1|colony/ant),
+  data = df_wide,
+  family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  
+)
 
-emmeans(model_b, pairwise ~  genotype)
+sim <- DHARMa::simulateResiduals(model_b3)
+plot(sim)
+
+BIC(model_b3)
+
+model_b4<- glmmTMB(
+  burstiness ~ genotype + (1|colony/ant),
+  data = df_wide,
+  family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  
+)
+
+sim <- DHARMa::simulateResiduals(model_b4)
+plot(sim)
+
+BIC(model_b4)
+
 
 ###############
-#Strength_mean significant differences in a b
+#BURSTINESS
 ###############
 
-model_s <- glmmTMB(
-  log(strength_mean) ~ genotype + (1|colony),
+model <- glmmTMB(
+  strength_mean ~ genotype*puremixed + (1|colony/ant),
   data = df_wide,
-  dispformula = ~genotype*puremixed,
-  family = gaussian()# 'ensures is positive', right skewed (link = log)
-  #family = gaussian()
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = gaussian()
 )
-
-model_s_interaction <- glmmTMB(
-log(strength_mean) ~ genotype*puremixed + (1|colony),
-  data = df_wide,
-dispformula = ~genotype*puremixed,
-  family = gaussian()# 'ensures is positive', right skewed (link = log)
-  #family = gaussian()
-)
-
-model_s_nointeraction <- glmmTMB(
-  log(strength_mean) ~ genotype+puremixed + (1|colony),
-  data = df_wide,
-  dispformula = ~genotype*puremixed,
-  family = gaussian()# 'ensures is positive', right skewed (link = log)
-  #family = gaussian()
-)
-
-drop1(model_s_nointeraction, test= "Chisq")
-AIC(model_s_interaction, model_s_nointeraction, model_s)
-
-sim <- DHARMa::simulateResiduals(model_s_interaction)
-plot(sim)
-drop1(model_s2, test = "Chisq")
-
-
-
-
-emmeans(model_s, pairwise ~ genotype )
 
 ############################
-#WAITINGTIME not significant!
-############################
-model_w<- glmmTMB(
-  waitingtime_mean ~ 1 + (1|colony),
-  data = df_wide,
-  dispformula = ~ genotype*puremixed,
-  family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
-  
-)
-
-sim <- DHARMa::simulateResiduals(model_w)
-plot(sim)
-
-model_wfull<- glmmTMB(
-  waitingtime_mean ~ genotype*puremixed + (1|colony),
-  data = df_wide,
-  dispformula = ~ genotype + puremixed,
-  family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
-  
-)
-
-model_wnointeraction<- glmmTMB(
-  waitingtime_mean ~ genotype+puremixed + (1|colony),
-  data = df_wide,
-  dispformula = ~ genotype + puremixed,
-  family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
-  
-)
-drop1(model_wfull, test = "Chisq")
-drop1(model_wnointeraction, test = "Chisq")
-
-
-
-
-##################################
-
-#############################
-####plot antlevel data for all parameters antlevel in a loop
-#############################
-library(ggplot2)
-library(viridisLite)
-library(viridis)
-
-treatment_colors<-c(
-  "a" = "#05e0fc",
-  "b" = "#fc0536",
-  "ba" = "#db05fc"
-)
-
-output_folder <- "network_parameter_plots/exp1_12hs/antlevel/"
-
-for (param in antlevel_parameters){
-param_plot <- ggplot(df_wide, aes(x = colony, y = .data[[param]], fill = treatment)) +
-  
-  geom_jitter(aes(color = genotype), width = 0.1, alpha = 0.7, size = 2) +
-  geom_boxplot(width = 0.3, outlier.shape = NA, color = "black", alpha = 0.4) +
-  theme_minimal() +
-  scale_fill_manual(values = c("a" = "#05e0fc", "b" = "#fc0536", "ba" = "#db05fc")) +
-  scale_color_manual(values = c("a" = "#05e0fc", "b" = "#fc0536", "ba" = "#db05fc")) +
-  labs(
-    title = " ",
-    x = "colony",
-    y = param
-  ) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # rotate x labels for readability
-# Save each plot as PNG
-ggsave(
-  filename = paste0(output_folder, "/", "ANTLEVEL_" , param, ".png"),
-  plot = param_plot,
-  width = 6,
-  height = 5,
-  dpi = 300
-)
-
-}
-
-
-#####################
-#trash
-for (para in parameters) {
-  # Compute Shapiro–Wilk test per treatment for this parameter
-  qqplot <- network_parameter_complete %>%
-    group_by(treatment) %>%
-    summarise(
-      shapiro_p = shapiro.test(.data[[para]])$p.value,
-      .groups = "drop"
-    )
-  
-  # Store results in list using parameter name
-  distribution_test[[para]] <- res
-}
-
-for (para in parameters) {
-  # Compute Shapiro–Wilk test per treatment for this parameter
-  res <- network_parameter_complete %>%
-    group_by(treatment) %>%
-    summarise(
-      shapiro_p = shapiro.test(.data[[para]])$p.value,
-      .groups = "drop"
-    )
-  
-  # Store results in list using parameter name
-  distribution_test[[para]] <- res
-}
+#WAITINGTIME

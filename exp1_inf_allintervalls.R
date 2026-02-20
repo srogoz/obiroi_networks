@@ -23,7 +23,7 @@ library(ggpubr)
 np <- import("numpy")
 
 ################
-setwd("Desktop/EXP1_analysis_BROKEN")
+setwd("Desktop/EXP1_analysis")
 source("function_collection.R")
 
 
