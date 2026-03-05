@@ -23,148 +23,22 @@ np <- import("numpy")
 ################
 setwd("Desktop/EXP1_analysis")
 source("function_collection.R")
-
-
-
-#######
-
-expected_ants= c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP")
-
-selected_colonies<-list(
-  "a16-1", "a16-2", "a16-3", "a16-4","a16-5","a16-6","a16-7", "a16-8",
-  "b16-1", "b16-2", "b16-3", "b16-4", "b16-5", "b16-6", "b16-7","b16-8",
-  "ba16-1","ba16-2", "ba16-3", "ba16-4", "ba16-5",  "ba16-6","ba16-7","ba16-8"
-)
-#present ants for EXP1_12hs
-present_ants_list<-list( "a16-1" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "a16-2" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "a16-3" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "a16-4" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "a16-5" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "a16-6" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "a16-7" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "a16-8" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "b16-1" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "b16-2" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "b16-3" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "b16-4" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "b16-5" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "b16-6" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "b16-7" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "b16-8" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "ba16-1" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "ba16-2" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "ba16-3" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "ba16-4" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "ba16-5" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "ba16-6" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
-                         "ba16-7" = c("BB", "BG", "GB", "GG", "GO", "GP", "OB", "OG", "OP", "PB", "PG", "PO", "PP"),
-                         "ba16-8" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP")
-)
-framerate<-list("a16-1" = 10,
-                "a16-2" = 10,
-                "a16-3" = 10,
-                "a16-4" = 10,
-                "a16-5" = 10,
-                "a16-6" = 10,
-                "b16-1" = 10,
-                "b16-2" = 10,
-                "b16-3"= 10,
-                "b16-4" = 10,
-                "b16-5" = 10,
-                "b16-6" = 10,
-                "ba16-1"= 10,
-                "ba16-2"=10,
-                "ba16-3"=10,
-                "ba16-4"=10, 
-                "ba16-5"=10,
-                "ba16-6"=10,
-                "a16-7"=5,
-                "a16-8"=5,
-                "b16-7"=5,
-                "b16-8"=5,
-                "ba16-7"=5,
-                "ba16-8"=5)
-
-
-treatment_match<-list("a16-1" = "1",
-                      "a16-2" = "1",
-                      "a16-3" = "1",
-                      "a16-4" = "1",
-                      "a16-5" = "1",
-                      "a16-6" = "1",
-                      "a16-7" = "1",
-                      "a16-8" = "1",
-                      "b16-1" = "2", 
-                      "b16-2" = "2",
-                      "b16-3" = "2", 
-                      "b16-4" = "2", 
-                      "b16-5" = "2", 
-                      "b16-6" = "2",
-                      "b16-7" = "2",
-                      "b16-8" = "2",
-                      "ba16-1" = "3", 
-                      "ba16-2" = "3",
-                      "ba16-3" = "3",
-                      "ba16-4" = "3",
-                      "ba16-5" = "3",
-                      "ba16-6" = "3",
-                      "ba16-7" = "3",
-                      "ba16-8" = "3"
-)
-genotype_match<-list("BB" = "b",
-                     "BG" = "b",
-                     "BO" = "b",
-                     "BP" = "b",
-                     "GB" = "b",
-                     "GG" = "b", 
-                     "GO" = "b",
-                     "GP" = "b", 
-                     "OB" = "a",
-                     "OG" = "a",
-                     "OO" = "a",
-                     "OP" = "a",
-                     "PB" = "a",
-                     "PG" = "a",
-                     "PO" = "a",
-                     "PP" = "a")
-
-expected_ants= c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP")
-parameters <-c("total_number_interactions", "total_sum_of_interactions", "strength_mean", "strength_sd", "interaction_length_mean", "interaction_length_sd", "waiting_time_mean", "waiting_time_sd", "burstiness", "density_aggr", "global_eff", "assortativity", "mean_distance")
-
-#############################
-#CREATE EDGELISTS
-#############################
-#check number of frames
-
-for (i in 1:length(selected_colonies)){
-  network<-np$load(adjmatrix_list[[selected_colonies[[i]]]])
-  print(dim(network)[3])
-}
-########################
-#set truncation time for infected 75mins
-
-
-
-interval_time<-5
-number_intervalls<-15
-
-
-####################
-
-#unpper and lower interaction limit
-
-interaction_limit_min<-2
-interaction_limit_sec<-1
-
+source("global_parameters_exp1_12hs.R")
 source_folder_edgelist<-"edge_lists/exp1_12hs/"
-folder_path_networkpara <-"network_parameters/exp1_12hs/5_mins/106_120/"
+folder_path_networkpara <-"network_parameters/exp1_12hs/5_mins/120_135/"
 output_folder <- "network_parameter_plots/exp1_12hs/5_mins/"
 timestamp <- format(Sys.time(), "%d%m%Y")
 
+#set truncation time for infected 75mins
+interval_time<-5
+number_intervalls<-15
+#unpper and lower interaction limit
+interaction_limit_min<-2
+interaction_limit_sec<-1
 #get network parameters
 network_obj_list<-get_colony_files(source_folder_edgelist, selected_colonies)
-#######################################
+
+####get network parameters for timepoints of interest ###################################
 #antlevel parameter collection
 strength_antlevel_mean<-data.frame(row.names = expected_ants)
 strength_antlevel_sd<-data.frame(row.names = expected_ants)
@@ -173,6 +47,7 @@ waiting_time_ant_mean_df<-data.frame(row.names = expected_ants)
 waiting_time_ant_sd_df<-data.frame(row.names = expected_ants)
 interactionlength_ant_mean<-data.frame(row.names = expected_ants)
 burstiness_ant_df<-data.frame(row.names = expected_ants)
+clustering_local_df<-data.frame(row.names = expected_ants)
 centrality_antlevel_df<-data.frame(row.names = expected_ants)
 
 results_networkparameters_allintervalls<-data.frame(colony_name = NA,
@@ -191,6 +66,7 @@ results_networkparameters_allintervalls<-data.frame(colony_name = NA,
                                                     density_aggr=NA,
                                                     global_eff=NA,
                                                     assortativity=NA,
+                                                    clustering_global= NA,
                                                     started_but_not_ended=NA)
 
 for (i in 1:length(selected_colonies)){
@@ -214,15 +90,15 @@ for (i in 1:length(selected_colonies)){
     from = 0,
     by   = interval_size,
     #number intervalls +1 (+time between)
-    length.out = number_intervalls + 107
+    length.out = number_intervalls + 121
   )
   
   for (j in 1:number_intervalls){
     #start and stop
     #j, add same length if later timeintervalls
-    time_window_start<-intervall_timepoints[j+107]
+    time_window_start<-intervall_timepoints[j+120]
     #j+1 add same length if later timeintervalls
-    time_window_end<-intervall_timepoints[j+108]
+    time_window_end<-intervall_timepoints[j+121]
     
     #limit to timeintervall
     network_obj_5<- network_obj[
@@ -458,6 +334,42 @@ for (i in 1:length(selected_colonies)){
                             directed = FALSE
     )
     
+    
+    #clustering coefficient global and local
+    
+    clustering_global<-transitivity(
+      graph_aggregated,
+      type ="global",
+      vids = NULL,
+      weights = E(graph_aggregated)$weight,
+      isolates = c("NaN")
+    )
+    
+    clustering_local<-transitivity(
+      graph_aggregated,
+      type ="barrat",
+      vids = NULL,
+      weights = E(graph_aggregated)$weight,
+      isolates = c("NaN")
+    )
+    
+    #antlevel measure
+    clustering_collection<-c(clustering_local)
+    clustering_collection <- setNames(
+      c(clustering_local),
+      present_ants
+    )
+    
+    clustering_full <- setNames(
+      rep(NA_real_, length(expected_ants)),
+      expected_ants
+    )
+    # fill in values for ants that exist
+    clustering_full[names(clustering_collection)] <- clustering_collection
+    
+    #assign to collection
+    clustering_local_df[[paste0(colony_name,"_",j)]]<-clustering_full
+    
     ####Local and global Efficiency
     #colony level:
     global_eff<-global_efficiency(graph_aggregated, weights = E(graph_aggregated)$weight)
@@ -575,7 +487,8 @@ for (i in 1:length(selected_colonies)){
               assortativity=ass_ants,
               global_eff=global_eff,
               mean_distance = mean_distance,
-              burstiness = burstiness
+              burstiness = burstiness,
+              clustering_global= clustering_global
               
       )
     #add timestamp and folder and save
@@ -592,6 +505,9 @@ for (i in 1:length(selected_colonies)){
 
 ##########################
 #save antlevel data
+write.csv(clustering_local_df,
+          file = paste0(folder_path_networkpara, "ANTLEVEL_allintervalls_clustering_local", timestamp, ".csv"),
+          row.names = FALSE)
 write.csv(strength_antlevel_mean,
           file = paste0(folder_path_networkpara, "ANTLEVEL_allintervalls_strength_mean", timestamp, ".csv"),
           row.names = FALSE)
@@ -621,13 +537,13 @@ write.csv(centrality_antlevel_df,
 
 #read data
 #first 75min
-results_networkparameters_allintervalls<-read.csv(file = "network_parameters/exp1_12hs/5_mins/1_15/ba16-8_network_parameters_allintervalls_11022026.csv")
+results_networkparameters_allintervalls<-read.csv(file = "network_parameters/exp1_12hs/5_mins/1_15/ba16-8_network_parameters_allintervalls_26022026.csv")
 #2nd 75 min
-results_networkparameters_allintervalls<-read.csv(file = "network_parameters/exp1_12hs/5_mins/16-30/ba16-8_network_parameters_allintervalls_11022026.csv")
+results_networkparameters_allintervalls<-read.csv(file = "network_parameters/exp1_12hs/5_mins/16_30/ba16-8_network_parameters_allintervalls_26022026.csv")
 #after 10 hs
-results_networkparameters_allintervalls<-read.csv(file = "network_parameters/exp1_12hs/5_mins/106_120/ba16-8_network_parameters_allintervalls_11022026.csv")
+results_networkparameters_allintervalls<-read.csv(file = "network_parameters/exp1_12hs/5_mins/106_120/ba16-8_network_parameters_allintervalls_27022026.csv")
 #last 75 mins after 11hs
-results_networkparameters_allintervalls<-read.csv(file = "network_parameters/exp1_12hs/5_mins/120_135/ba16-8_network_parameters_allintervalls_11022026.csv")
+results_networkparameters_allintervalls<-read.csv(file = "network_parameters/exp1_12hs/5_mins/120_135/ba16-8_network_parameters_allintervalls_27022026.csv")
 
 #remove NA line, first line
 results_networkparameters_allintervalls <-
@@ -639,98 +555,6 @@ df_networkparameters_allintervalls <- results_networkparameters_allintervalls %>
   )
 
 
-#plot time development of parameters
-
-treatment_colors<-c(
-  "a" = "#05e0fc",
-  "b" = "#fc0536",
-  "ba" = "#db05fc"
-)
-
-colony_colors <-c(
-  "a16-1" = "blue",
-  "a16-2" = "royalblue",
-  "a16-3" = "slateblue2",
-  "a16-4" = "navyblue",
-  "a16-5" = "lightblue2",
-  "a16-6" = "deepskyblue1",
-  "a16-7"="skyblue2",
-  "a16-8"="cyan",
-  
-  "b16-1" = "firebrick2",
-  "b16-2" = "red4",
-  "b16-3"= "tomato2",
-  "b16-4" = "indianred",
-  "b16-5" = "darkorange2",
-  "b16-6" = "sienna1",
-  "b16-7"="coral",
-  "b16-8"="lightsalmon",
-  
-  "ba16-1"= "darkviolet",
-  "ba16-2"="orchid2",
-  "ba16-3"="darkmagenta",
-  "ba16-4"="magenta1", 
-  "ba16-5"="deeppink1",
-  "ba16-6"="plum2",
-  "ba16-7"="violet",
-  "ba16-8"="hotpink2"
-)
-
-
-exposed_ants <-c(
-  "a16-1" = "OP",
-  "a16-2" = "BP",
-  "a16-3" = "OO",
-  "a16-4" = "BO",
-  "a16-5" = "OG",
-  "a16-6" = "BG",
-  "a16-7"= "OB",
-  "a16-8"= "BB",
-  "b16-1" = "PP",
-  "b16-2" = "GP",
-  "b16-3"= "PO",
-  "b16-4" = "GO",
-  "b16-5" = "PG",
-  "b16-6" = "GG",
-  "b16-7"= "PB",
-  "b16-8"= "GB",
-  "ba16-1"= "OP",
-  "ba16-2"="PP",
-  "ba16-3"="OG",
-  "ba16-4"="GO", 
-  "ba16-5"="GG",
-  "ba16-6"="PB",
-  "ba16-7"="GP",
-  "ba16-8"="BB"
-)
-
-
-exposed_ants_string <-c(
-  "OP_a16.1",
-  "BP_a16.2",
-  "OO_a16.3",
-  "BO_a16.4",
-  "OG_a16.5",
-  "BG_a16.6",
-  "OB_a16.7",
-  "BB_a16.8",
-  "PP_b16.1",
-  "GP_b16.2",
-  "PO_b16.3",
-  "GO_b16.4",
-  "PG_b16.5",
-  "GG_b16.6",
-  "PB_b16.7",
-  "GB_b16.8",
-  "OP_ba16.1",
-  "PP_ba16.2",
-  "OG_ba16.3",
-  "GO_ba16.4", 
-  "GG_ba16.5",
-  "PB_ba16.6",
-  "GP_ba16.7",
-  "BB_ba16.8"
-)
 
 
 
@@ -794,6 +618,7 @@ for (param in parameters){
     )
   }
 }
+
 ####################
 #overlay 
 #mean over all colonies for every timepoint, use single upper and lower bounds and geomribbon to indicate variance
@@ -853,11 +678,11 @@ for (param in parameters){
 ###################
 library(patchwork)
 #read data
- files<-c("network_parameters/exp1_12hs/5_mins/1_15/ba16-8_network_parameters_allintervalls_11022026.csv", #first 75mins
-          "network_parameters/exp1_12hs/5_mins/16-30/ba16-8_network_parameters_allintervalls_11022026.csv", #2nd 75mins
-          "network_parameters/exp1_12hs/5_mins/106_120/ba16-8_network_parameters_allintervalls_11022026.csv", #after 10hs,
-          "network_parameters/exp1_12hs/5_mins/120_135/ba16-8_network_parameters_allintervalls_11022026.csv",#last 75mins after 11 hs 
-          "network_parameters/exp1_inf/5mins/ba16-8_network_parameters_allintervalls_10022026.csv"#infection data
+ files<-c("network_parameters/exp1_12hs/5_mins/1_15/ba16-8_network_parameters_allintervalls_26022026.csv", #first 75mins
+          "network_parameters/exp1_12hs/5_mins/16_30/ba16-8_network_parameters_allintervalls_26022026.csv", #2nd 75mins
+          "network_parameters/exp1_12hs/5_mins/106_120/ba16-8_network_parameters_allintervalls_27022026.csv", #after 10hs,
+          "network_parameters/exp1_12hs/5_mins/120_135/ba16-8_network_parameters_allintervalls_27022026.csv",#last 75mins after 11 hs 
+          "network_parameters/exp1_inf/5mins/ba16-8_network_parameters_allintervalls_27022026.csv"#infection data
           )
 
 before_afterinfection<-lapply(files, read.csv)
@@ -873,11 +698,11 @@ before_afterinfection<-lapply(before_afterinfection, function(df){
 })
 
 ## add time point marker to certain files to keep them apart
-before_afterinfection[[1]]<-before_afterinfection[[1]]%>%mutate(globaltime = "until 1.25h")
+before_afterinfection[[1]]<-before_afterinfection[[1]]%>%mutate(globaltime = "0-1.25h")
 before_afterinfection[[2]]<-before_afterinfection[[2]]%>%mutate(globaltime = "1.25-2.5h")
 before_afterinfection[[3]]<-before_afterinfection[[3]]%>%mutate(globaltime = "8.75h-10h")
 before_afterinfection[[4]]<-before_afterinfection[[4]]%>%mutate(globaltime = "10h-11.25h")
-before_afterinfection[[5]]<-before_afterinfection[[5]]%>%mutate(globaltime = "1.25h after pathogen exposure")
+before_afterinfection[[5]]<-before_afterinfection[[5]]%>%mutate(globaltime = "fungus exp")
 
 #introduce marker for before and after infection
 before_afterinfection[[1]]<-before_afterinfection[[1]]%>%mutate(infection = "before")
@@ -895,25 +720,25 @@ before_after_infection_b<-before_after_infection_merged %>% filter(treatment == 
 before_after_infection_ba<-before_after_infection_merged %>% filter(treatment == "ba")
 
 # look at each treatment seperately before and after infection for each parameter
-global_times<-c("until 1.25h", "1.25-2.5h","8.75h-10h", "10h-11.25h", "1.25h after pathogen exposure")
-global_times_colors_a<-c("until 1.25h" = "cyan", 
+global_times<-c("0-1.25h", "1.25-2.5h","8.75h-10h", "10h-11.25h", "fungus exp")
+global_times_colors_a<-c("0-1.25h" = "cyan", 
                        "1.25-2.5h" = "slateblue2",
                        "8.75h-10h" = "blue",
                        "10h-11.25h" = "dodgerblue1",
-                       "1.25h after pathogen exposure"= "springgreen1")
+                       "fungus exp"= "springgreen1")
 
 
-global_times_colors_b<-c("until 1.25h" = "firebrick2", 
+global_times_colors_b<-c("0-1.25h" = "firebrick2", 
                        "1.25-2.5h" = "red4",
                        "8.75h-10h" = "tomato2",
                        "10h-11.25h" = "darkorange",
-                       "1.25h after pathogen exposure"= "springgreen1")
+                       "fungus exp"= "springgreen1")
 
-global_times_colors_ba<-c("until 1.25h" = "darkviolet", 
+global_times_colors_ba<-c("0-1.25h" = "darkviolet", 
                        "1.25-2.5h" = "magenta",
                        "8.75h-10h" = "plum2",
                        "10h-11.25h" = "orchid",
-                       "1.25h after pathogen exposure"= "springgreen1")
+                       "fungus exp"= "springgreen1")
 
 for (param in parameters){
  
@@ -970,11 +795,10 @@ for (param in parameters){
 ###########################
 #same plot of comparisons all in one
 ###########################
+folder_path_timeplots<-"network_parameter_plots/exp1_12hs/5_mins/time_continuum/overlays/"
 
-c(100, 1300)
 for (param in parameters){
-  param <- "mean_distance"
-  
+
   summary_a <- before_after_infection_a|>
     group_by(globaltime, time_interval) |>
     summarise(
@@ -1003,6 +827,12 @@ for (param in parameters){
       .groups = "drop"
     )
   
+  min_range<- min(c(summary_a$mean_val-summary_a$se_val, summary_b$mean_val-summary_b$se_val, summary_ba$mean_val-summary_ba$se_val))
+  
+  
+  max_range<- max(c(summary_a$mean_val+summary_a$se_val, summary_b$mean_val+summary_b$se_val, summary_ba$mean_val+summary_ba$se_val))
+ 
+  
   comparisonplot_a<-ggplot(summary_a,
                        aes(x = time_interval,
                            y = mean_val,
@@ -1024,14 +854,21 @@ for (param in parameters){
     scale_fill_manual(
       values = global_times_colors_a
     ) +
-    coord_cartesian(ylim = c(0, 100))+
+    coord_cartesian(ylim = c(min_range, max_range))+
     labs(
-      x = "time [5min intervalls]",
+      x = "time increments [5 min]",
       y = param,
-      color = "timepoint",
-      fill  = "timepoint"
+      title = "a",
+      color = "extracted from:",
+      fill  = "extracted from:"
     ) +
-    theme_minimal()
+    theme_minimal()+
+    theme(
+      legend.position = c(0.98, 0.98),     # inside top-right
+      legend.justification = c(1, 1),      # anchor legend at its top-right
+       legend.text  = element_text(size = 10),
+      legend.key.size = unit(0.6, "cm")    # size of legend keys
+    )
   
   comparisonplot_b<-ggplot(summary_b,
                            aes(x = time_interval,
@@ -1054,14 +891,21 @@ for (param in parameters){
     scale_fill_manual(
       values = global_times_colors_b
     ) +
-    coord_cartesian(ylim = c(0, 100))+
+    coord_cartesian(ylim = c(min_range, max_range))+
     labs(
-      x = "time [5min intervalls]",
+      x = "time increments [5 min]",
+      title = "b",
       y = param,
-      color = "timepoint",
-      fill  = "timepoint"
+      color = "extracted from:",
+      fill  = "extracted from:"
     ) +
-    theme_minimal()
+    theme_minimal()+
+    theme(
+      legend.position = c(0.98, 0.98),     # inside top-right
+      legend.justification = c(1, 1),      # anchor legend at its top-right
+      legend.text  = element_text(size = 10),
+      legend.key.size = unit(0.6, "cm")    # size of legend keys
+    )
   
   comparisonplot_ba<-ggplot(summary_ba,
                            aes(x = time_interval,
@@ -1084,19 +928,26 @@ for (param in parameters){
     scale_fill_manual(
       values = global_times_colors_ba
     ) +
-    coord_cartesian(ylim = c(0, 100))+
+    coord_cartesian(ylim = c(min_range, max_range))+
     labs(
-      x = "time [5min intervalls]",
+      x = "time increments [5 min]",
       y = param,
-      color = "Time",
-      fill  = "Time"
+      title = "ba",
+      color = "extracted from:",
+      fill  = "extracted from:"
     ) +
-    theme_minimal()
+    theme_minimal()+
+    theme(
+      legend.position = c(0.98, 0.98),     # inside top-right
+      legend.justification = c(1, 1),      # anchor legend at its top-right
+      legend.text  = element_text(size = 10),
+      legend.key.size = unit(0.6, "cm")    # size of legend keys
+    )
   #combine into one plot with same legend
   
   grid_plot<-(comparisonplot_a| comparisonplot_b| comparisonplot_ba) +
-    plot_layout(guides = "collect", axes = "collect_y" ) &
-    theme(legend.position = "bottom")
+    plot_layout( axes = "collect" )
+  # & theme(legend.position = "bottom")
   
   ggsave(
     filename = paste0(folder_path_timeplots, "/comparison/", param,"_","overlaybeforeafterinf_ALL.png"),
@@ -1120,15 +971,32 @@ model<-glm
 
 emmeans(model, pairwise ~ globaltime)
 
-#############################
-#glmm
-#############################
+####################################
+#glmm compare after infection period across treatments
+####################################
+ infection<-before_after_infection_merged%>%filter(globaltime =="fungus exp")
+for (param in parameters){
+  hist (before_after_infection_merged$param )
+}
+#strength_mean
+hist (before_after_infection_merged$strength_mean )
 model_g<- glmmTMB(
-  strength_mean ~ globaltime*treatment + (1 | colony_name),
+strength_mean ~ treatment + (1 | colony_name),
+ dispformula =~ 1,
   data = before_after_infection_merged, 
-  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
-  family = gaussian()
+  #family = gaussian()
+  family = Gamma(link = "log")
 )
+
+model_g<- glmmTMB(
+  log(strength_mean) ~ treatment + (1 | colony_name),
+  dispformula =~ treatment,
+  data = before_after_infection_merged, 
+  family = gaussian()
+  
+)
+
+drop1(model_g, test = "Chisq")
 
 sim <- DHARMa::simulateResiduals(model_g)
 plot(sim)
@@ -1139,8 +1007,898 @@ AIC(model_g)
 emm_trt <- emmeans(model_gt, ~ genotype*puremixed)
 pairs(emm_trt, adjust = "tukey")
 
-emmeans(model_g, pairwise ~ treatment | globaltime)
-emmeans(model_g, pairwise ~ globaltime | treatment)
+emmeans(model_g, pairwise ~ treatment)
+emmeans(model_g, pairwise ~ time_interval | treatment)
+
+#########
+#glmm compare only infection period 
+#########
+infection<-before_after_infection_merged%>%filter(globaltime =="fungus exp")
+
+for (param in parameters){
+  png(file=paste0("network_parameter_plots/exp1_inf/5_mins/time_continuum/overlays/hist/",param, ".png"),
+      width=600, height=350)
+  hist(infection[[param]], xlab = param, col = "purple", main= "")
+  dev.off()
+}
+
+#strength mean
+model_g<- glmmTMB(
+  strength_mean ~ treatment + (1 | colony_name),
+  dispformula =~ 1,
+  data = infection, 
+  #family = gaussian()
+  family = Gamma(link = "log")
+)
+
+sim <- DHARMa::simulateResiduals(model_g)
+plot(sim)
+
+emmeans(model_g, pairwise ~ treatment)
+
+#strength sd
+hist(infection$strength_sd)
+model_g<- glmmTMB(
+  strength_sd ~ treatment + (1 | colony_name),
+  dispformula =~ 1,
+  data = infection, 
+  #family = gaussian()
+  family = Gamma(link = "log")
+)
+
+sim <- DHARMa::simulateResiduals(model_g)
+plot(sim)
+
+emmeans(model_g, pairwise ~ treatment)
+
+#assortativity
+hist(infection$assortativity)
+model_g<- glmmTMB(
+  assortativity ~ treatment + (1 | colony_name),
+  #dispformula =~ treatment,
+  data = infection, 
+  #family = gaussian()
+  family = t_family()
+)
+
+sim <- DHARMa::simulateResiduals(model_g)
+plot(sim)
+
+emmeans(model_g, pairwise ~ treatment)
+
+#burstiness
+hist(infection$burstiness)
+model_g<- glmmTMB(
+  burstiness ~ treatment + (1 | colony_name),
+  dispformula =~ 1,
+  data = infection, 
+
+  family = t_family()
+)
+
+sim <- DHARMa::simulateResiduals(model_g)
+plot(sim)
+
+emmeans(model_g, pairwise ~ treatment)
+# global effectiveness
+infection$global_eff_corr<-infection$global_eff/10000
+hist(infection$global_eff_corr)
+model_g<- glmmTMB(
+  global_eff_corr ~ treatment + (1 | colony_name),
+  #dispformula =~ 1,
+  data = infection, 
+  
+  family = gaussian()
+)
+
+model_b<- glmmTMB(
+  global_eff_corr ~ treatment + (1 | colony_name),
+  #dispformula =~ 1,
+  data = infection, 
+  
+  family = beta_family()
+)
+
+sim <- DHARMa::simulateResiduals(model_b)
+plot(sim)
+
+AIC(model_g, model_b)
+
+emmeans(model_b, pairwise ~ treatment)
+
+#density aggr
+hist(infection$density_aggr)
+model_g<- glmmTMB(
+density_aggr ~ treatment + (1 | colony_name),
+  #dispformula =~ 1,
+  data = infection, 
+  
+  family = Gamma(link = "log")
+)
+
+sim <- DHARMa::simulateResiduals(model_g)
+plot(sim)
+
+
+
+emmeans(model_g, pairwise ~ treatment)
+#mean distance
+hist(infection$mean_distance)
+model_g<- glmmTMB(
+  mean_distance ~ treatment + (1 | colony_name),
+ 
+  data = infection, 
+  
+  family = Gamma(link = "log")
+)
+
+sim <- DHARMa::simulateResiduals(model_g)
+plot(sim)
+
+
+
+emmeans(model_g, pairwise ~ treatment)
+
+#interaction length mean
+hist(infection$interaction_length_mean)
+model_g<- glmmTMB(
+  interaction_length_mean ~ treatment + (1 | colony_name),
+  dispformula =~ 1,
+  data = infection, 
+  
+  family = t_family()
+)
+
+sim <- DHARMa::simulateResiduals(model_g)
+plot(sim)
+
+
+
+emmeans(model_g, pairwise ~ treatment)
+#interaction length_ sd
+hist(infection$interaction_length_sd)
+model_g<- glmmTMB(
+  interaction_length_sd ~ treatment + (1 | colony_name),
+  dispformula =~ 1,
+  data = infection, 
+  #family = gaussian()
+  family = t_family()
+)
+
+sim <- DHARMa::simulateResiduals(model_g)
+plot(sim)
+
+
+
+emmeans(model_g, pairwise ~ treatment)
+
+#waiting time mean
+hist(infection$waiting_time_mean)
+model_g<- glmmTMB(
+  waiting_time_mean ~ treatment + (1 | colony_name),
+  # dispformula =~ 1,
+  data = infection, 
+  #family = gaussian()
+  family = Gamma(link = "log")
+)
+
+sim <- DHARMa::simulateResiduals(model_g)
+plot(sim)
+
+
+
+emmeans(model_g, pairwise ~ treatment)
+# waiting time sd
+hist(infection$waiting_time_sd)
+model_g<- glmmTMB(
+  waiting_time_sd ~ treatment + (1 | colony_name),
+  # dispformula =~ 1,
+  data = infection, 
+  #family = gaussian()
+  family = Gamma(link = "log")
+)
+
+sim <- DHARMa::simulateResiduals(model_g)
+plot(sim)
+
+
+
+emmeans(model_g, pairwise ~ treatment)
+#global_clustering
+
+hist(infection$clustering_global)
+infection$clustering_global_corr<-infection$clustering_global-0.0005
+model_g<- glmmTMB(
+  clustering_global_corr ~ treatment + (1 | colony_name),
+  # dispformula =~ 1,
+  data = infection, 
+  family = t_family()
+  #family = Gamma(link = "log")
+)
+
+sim <- DHARMa::simulateResiduals(model_g)
+plot(sim)
+
+
+
+emmeans(model_g, pairwise ~ treatment)
+
+################################
+#difference between treatments no fungal infection
+################################
+for (param in parameters){
+png(file= paste0("network_parameter_plots/exp1_12hs/5_mins/time_continuum/overlays/hist/", param, ".png"),
+    width=600, height=350)
+hist(no_infection[[param]], xlab = param , col = "purple", main="")
+dev.off()
+}
+
+no_infection<-before_after_infection_merged%>%filter(globaltime != "fungal exp")
+#mean over 5 min time interval
+no_infection_mean<-no_infection%>%group_by(colony_name, globaltime, treatment)%>%summarise(
+  across(where(is.numeric), ~ mean(.x, na.rm = TRUE)),
+  .groups = "drop"
+)
+
+for (param in parameters){
+  png(file= paste0("network_parameter_plots/exp1_12hs/5_mins/time_mean/hist/", param, ".png"),
+      width=600, height=350)
+  hist(no_infection[[param]], xlab = param , col = "purple", main="")
+  dev.off()
+}
+#strength  mean over mean of 
+hist(no_infection_mean$strength_mean)
+#g1 bigger AIC
+model_g1<- glmmTMB(
+  log(strength_mean) ~ treatment + (1 | colony_name),
+  #dispformula =~globaltime*,
+  data = no_infection_mean, 
+  family = gaussian()
+  #family = Gamma(link = "log")
+)
+
+drop1(model_g1, test = "Chisq")
+
+sim <- DHARMa::simulateResiduals(model_g1)
+plot(sim)
+
+emmeans(model_g1, pairwise ~ treatment)
+
+model_g2<- glmmTMB(
+  strength_mean ~ treatment + (1 | colony_name),
+  #ziformula = ~1,
+  #dispformula =~treatment,
+  data = no_infection_mean, 
+  family = Gamma(link = log)
+  #family = Gamma(link = "log")
+)
+
+drop1(model_g2, test = "Chisq")
+AIC(model_g1, model_g2)
+
+sim <- DHARMa::simulateResiduals(model_g2)
+plot(sim)
+
+sim <- DHARMa::simulateResiduals(model_g)
+plot(sim)
+
+AIC(model_g, model_g1, model_g2)
+
+#strength_sd
+hist(no_infection_mean$strength_sd)
+model_g<- glmmTMB(
+  log(strength_sd) ~ treatment + (1| colony_name),
+ #ziformula = ~1,
+   dispformula =~ treatment,
+  data = no_infection_mean, 
+  # family = Gamma(link = "log")
+  family = gaussian()
+)
+sim <- DHARMa::simulateResiduals(model_g)
+plot(sim)
+
+model_g1<- glmmTMB(
+  strength_sd ~ treatment + (1| colony_name),
+  #ziformula = ~1,
+  dispformula =~ treatment,
+  data = no_infection_mean, 
+  # family = Gamma(link = "log")
+  family = gaussian()
+)
+
+sim <- DHARMa::simulateResiduals(model_g1)
+plot(sim)
+AIC(model_g, model_g1)
+
+drop1(model_g, test = "Chisq")
+emmeans(model_g, pairwise ~ treatment)
+
+
+#assortativity
+
+hist(no_infection_mean$assortativity)
+model_g<- glmmTMB(
+  assortativity ~ treatment + (1 | colony_name),
+  #dispformula =~ treatment,
+  data = no_infection_mean, 
+  #family = gaussian()
+  family = t_family()
+)
+
+sim <- DHARMa::simulateResiduals(model_g)
+plot(sim)
+
+model_g1<- glmmTMB(
+  assortativity ~ treatment + (1 | colony_name),
+  #dispformula =~ treatment,
+  data = no_infection_mean, 
+  family = gaussian()
+  
+)
+
+sim <- DHARMa::simulateResiduals(model_g1)
+plot(sim)
+drop1(model_g, test= "Chisq")
+drop1(model_g1, test= "Chisq")
+AIC(model_g, model_g1)
+emmeans(model_g, pairwise ~ treatment)
+
+#burstiness
+hist(no_infection_mean$burstiness)
+model_g<- glmmTMB(
+  burstiness ~ treatment + (1 | colony_name),
+  # ziformula = ~1,
+  # dispformula =~ 1,
+  data = no_infection_mean, 
+  
+  family = gaussian()
+)
+
+sim <- DHARMa::simulateResiduals(model_g)
+plot(sim)
+
+drop1(model_g, test = "Chisq")
+emmeans(model_g, pairwise ~ treatment)
+# global effectiveness
+no_infection_mean$global_eff_corr<-no_infection_mean$global_eff/10000
+hist(no_infection_mean$global_eff_corr)
+model_g<- glmmTMB(
+  global_eff_corr ~ treatment + (1 | colony_name),
+  #dispformula =~ 1,
+  data = no_infection_mean, 
+  
+  family = gaussian()
+)
+sim <- DHARMa::simulateResiduals(model_g)
+plot(sim)
+
+model_g1<- glmmTMB(
+  global_eff_corr ~ treatment + (1 | colony_name),
+  data = no_infection_mean, 
+  family = t_family()
+)
+
+sim <- DHARMa::simulateResiduals(model_g1)
+plot(sim)
+AIC(model_g1, model_g)
+
+drop1(model_g, test = "Chisq")
+emmeans(model_g, pairwise ~treatment)
+
+
+AIC(model_g, model_b)
+
+emmeans(model_b, pairwise ~ treatment)
+
+#density aggr
+hist(no_infection_mean$density_aggr)
+model_g<- glmmTMB(
+  density_aggr ~ treatment + (1|colony_name),
+  data = no_infection_mean, 
+ 
+  family = Gamma(link = "log")
+)
+
+sim <- DHARMa::simulateResiduals(model_g)
+plot(sim)
+
+drop1(model_g, test = "Chisq")
+
+
+
+emmeans(model_g, pairwise ~ treatment)
+
+#mean distance
+hist(no_infection_mean$mean_distance)
+model_g<- glmmTMB(
+  mean_distance ~ treatment + (1 | colony_name),
+  data = no_infection_mean, 
+  family = Gamma(link = "log")
+)
+
+drop1(model_g, test = "Chisq")
+
+
+
+emmeans(model_g, pairwise ~ treatment)
+
+#interaction length mean
+hist(no_infection_mean$interaction_length_mean)
+model_g<- glmmTMB(
+ log( interaction_length_mean) ~ treatment + (1 | colony_name),
+
+  data = no_infection_mean, 
+  
+  family = gaussian()
+)
+
+sim <- DHARMa::simulateResiduals(model_g)
+plot(sim)
+drop1(model_g, test= "Chisq")
+
+
+
+#interaction length_ sd
+hist(no_infection_mean$interaction_length_sd)
+#works wayy better, lower AIC
+model_g<- glmmTMB(
+  log(interaction_length_sd) ~ treatment + (1 | colony_name),
+  data = no_infection_mean, 
+  family = gaussian()
+)
+
+sim <- DHARMa::simulateResiduals(model_g)
+plot(sim)
+
+drop1(model_g, test= "Chisq")
+
+#waiting time mean
+hist(no_infection_mean$waiting_time_mean)
+model_g<- glmmTMB(
+  waiting_time_mean ~ treatment + (1 | colony_name),
+   #dispformula =~ 1,
+  # ziformula = ~0,
+  data = no_infection_mean,
+  family = Gamma(link = "log")
+ 
+)
+
+sim <- DHARMa::simulateResiduals(model_g)
+plot(sim)
+
+drop1(model_g, test = "Chisq")
+emmeans(model_g, pairwise ~ treatment)
+# waiting time sd
+hist(no_infection_mean$waiting_time_sd)
+model_g<- glmmTMB(
+  waiting_time_sd ~ treatment + (1 | colony_name),
+  data = no_infection_mean, 
+  family = Gamma(link="log")
+)
+
+sim <- DHARMa::simulateResiduals(model_g)
+plot(sim)
+
+drop1(model_g, test= "Chisq")
+
+emmeans(model_g, pairwise ~ treatment)
+#global_clustering
+no_infection_mean$clustering_global_corr<-no_infection_mean$clustering_global-0.0005
+hist(no_infection_mean$clustering_global)
+
+model_g<- glmmTMB(
+  clustering_global ~ treatment + (1 | colony_name),
+  data = no_infection_mean, 
+  family = gaussian()
+)
+
+sim <- DHARMa::simulateResiduals(model_g)
+plot(sim)
+
+
+drop1(model_g, test = "Chisq")
+emmeans(model_g, pairwise ~ treatment)
+############
+#comparing per treatment before and after infection
+############
+#add infection marker
+
+before_after_infection_mean<-before_after_infection_merged%>%group_by(globaltime, colony_name, treatment, infection)%>%summarise(across(where(is.numeric),~mean(.x, na.rm =TRUE)), .groups = "drop")
+#pre_post_comparison$infection<-ifelse(pre_post_comparison_a$globaltime == "fungus exp", "post", "pre")
+
+for (param in parameters){
+  png(file= paste0("network_parameter_plots/exp1_12hs/5_mins/time_mean/hist_infection/", param, ".png"),
+      width=600, height=350)
+  hist(before_after_infection_mean[[param]], xlab = param , col = "purple", main="")
+  dev.off()
+}
+##strength mean
+hist(before_after_infection_mean$strength_mean)
+model_g<- glmmTMB(
+  log(strength_mean) ~ infection*treatment + (1 | colony_name),
+  data = before_after_infection_mean,
+  family = gaussian()
+)
+
+sim <- DHARMa::simulateResiduals(model_g)
+plot(sim)
+
+
+drop1(model_g, test = "Chisq")
+emmeans(model_g, pairwise ~ infection|treatment, type = "response")
+
+#strength_sd
+
+hist(before_after_infection_mean$strength_sd)
+model_g<- glmmTMB(
+  log(strength_sd) ~ infection*treatment + (1 | colony_name),
+  data = before_after_infection_mean,
+  family = gaussian()
+)
+
+model_g1<- glmmTMB(
+  strength_sd ~ infection*treatment + (1 | colony_name),
+  data = before_after_infection_mean,
+  family = gaussian()
+)
+
+sim <- DHARMa::simulateResiduals(model_g1)
+plot(sim)
+
+AIC(model_g, model_g1)
+
+drop1(model_g, test = "Chisq")
+emmeans(model_g, pairwise ~ infection|treatment, type = "response")
+## assortativity
+hist(before_after_infection_mean$assortativity)
+model_g<- glmmTMB(
+  assortativity ~ infection*treatment + (1 | colony_name),
+  data = before_after_infection_mean,
+  family = gaussian()
+)
+sim <- DHARMa::simulateResiduals(model_g)
+plot(sim)
+
+model_g1<- glmmTMB(
+  assortativity ~ infection+treatment + (1 | colony_name),
+  data = before_after_infection_mean,
+  family = gaussian()
+)
+
+sim <- DHARMa::simulateResiduals(model_g1)
+plot(sim)
+
+
+
+drop1(model_g, test = "Chisq")
+drop1(model_g1, test = "Chisq")
+emmeans(model_g1, pairwise ~ infection|treatment, type = "response")
+###burstiness
+hist(before_after_infection_mean$burstiness)
+model_g<- glmmTMB(
+ burstiness ~ infection*treatment + (1 | colony_name),
+  data = before_after_infection_mean,
+  family = gaussian()
+)
+sim <- DHARMa::simulateResiduals(model_g)
+plot(sim)
+
+model_g1<- glmmTMB(
+  burstiness ~ infection+treatment + (1 | colony_name),
+  data = before_after_infection_mean,
+  family = gaussian()
+)
+
+sim <- DHARMa::simulateResiduals(model_g1)
+plot(sim)
+
+drop1(model_g, test = "Chisq")
+drop1(model_g1, test = "Chisq")
+emmeans(model_g1, pairwise ~ infection|treatment, type = "response")
+
+#global_effectiveness
+hist(before_after_infection_mean$global_eff_corr)
+before_after_infection_mean$global_eff_corr<-before_after_infection_mean$global_eff/10000
+model_g<- glmmTMB(
+ global_eff_corr ~ infection*treatment + (1 | colony_name),
+  data = before_after_infection_mean,
+  family = gaussian()
+)
+sim <- DHARMa::simulateResiduals(model_g)
+plot(sim)
+
+drop1(model_g, test = "Chisq")
+
+emmeans(model_g, pairwise ~ infection|treatment, type = "response")
+## density aggr
+hist(before_after_infection_mean$density_aggr)
+
+model_g<- glmmTMB(
+ density_aggr ~ infection*treatment + (1 | colony_name),
+  data = before_after_infection_mean,
+  family = Gamma(link="log")
+)
+sim <- DHARMa::simulateResiduals(model_g)
+plot(sim)
+
+drop1(model_g, test = "Chisq")
+
+emmeans(model_g, pairwise ~ infection|treatment, type = "response")
+
+#waiting time mean
+
+hist(before_after_infection_mean$waiting_time_mean)
+
+model_g<- glmmTMB(
+  waiting_time_mean ~ infection*treatment + (1 | colony_name),
+  data = before_after_infection_mean,
+  dispformula = ~treatment,
+  family = Gamma(link="log")
+)
+sim <- DHARMa::simulateResiduals(model_g)
+plot(sim)
+
+drop1(model_g, test = "Chisq")
+
+model_g1<- glmmTMB(
+  waiting_time_mean ~ infection+treatment + (1 | colony_name),
+  data = before_after_infection_mean,
+  dispformula = ~treatment,
+  family = Gamma(link="log")
+)
+sim <- DHARMa::simulateResiduals(model_g1)
+plot(sim)
+drop1(model_g1, test = "Chisq")
+emmeans(model_g1, pairwise ~ infection|treatment, type = "response")
+
+#waiting time sd
+hist(before_after_infection_mean$waiting_time_sd)
+
+model_g<- glmmTMB(
+  waiting_time_sd ~ infection*treatment + (1 | colony_name),
+  data = before_after_infection_mean,
+  dispformula = ~infection,
+  #family = gaussian()
+  family = Gamma(link= "log")
+)
+sim <- DHARMa::simulateResiduals(model_g)
+plot(sim)
+
+drop1(model_g, test = "Chisq")
+
+model_g1<- glmmTMB(
+  waiting_time_mean ~ infection+treatment + (1 | colony_name),
+  data = before_after_infection_mean,
+  dispformula = ~treatment,
+  family = Gamma(link="log")
+)
+sim <- DHARMa::simulateResiduals(model_g1)
+plot(sim)
+drop1(model_g1, test = "Chisq")
+emmeans(model_g1, pairwise ~ infection|treatment, type = "response")
+
+#mean distance
+hist(before_after_infection_mean$mean_distance)
+
+model_g2<- glmmTMB(
+  mean_distance ~ infection*treatment + (1 | colony_name),
+  data = before_after_infection_mean,
+  dispformula = ~ infection,
+  
+   family = Gamma(link="log")
+)
+sim <- DHARMa::simulateResiduals(model_g2)
+plot(sim)
+
+model_g<- glmmTMB(
+  log(mean_distance) ~ infection*treatment + (1 | colony_name),
+  data = before_after_infection_mean,
+  dispformula = ~ infection,
+  family = gaussian()
+  # family = Gamma(link="log")
+)
+sim <- DHARMa::simulateResiduals(model_g)
+plot(sim)
+
+AIC(model_g, model_g2)
+
+drop1(model_g, test = "Chisq")
+
+model_g1<- glmmTMB(
+  log(mean_distance) ~ infection+treatment + (1 | colony_name),
+  data = before_after_infection_mean,
+  dispformula = ~ infection,
+  family = gaussian()
+  # family = Gamma(link="log")
+)
+sim <- DHARMa::simulateResiduals(model_g1)
+plot(sim)
+drop1(model_g1, test = "Chisq")
+
+emmeans(model_g1, pairwise ~ infection|treatment, type = "response")
+
+#global clustering
+hist(before_after_infection_mean$clustering_global)
+
+model_g<- glmmTMB(
+ clustering_global ~ infection*treatment + (1 | colony_name),
+  data = before_after_infection_mean,
+  dispformula = ~ infection,
+  
+  family = Gamma(link="log")
+)
+sim <- DHARMa::simulateResiduals(model_g)
+plot(sim)
+model_g1<- glmmTMB(
+  clustering_global ~ infection*treatment + (1 | colony_name),
+  data = before_after_infection_mean,
+  
+  
+  family = beta_family()
+)
+sim <- DHARMa::simulateResiduals(model_g1)
+plot(sim)
+
+AIC(model_g, model_g1)
+drop1(model_g1, test = "Chisq")
+
+model_g<- glmmTMB(
+  clustering_global ~ infection+treatment + (1 | colony_name),
+  data = before_after_infection_mean,
+  
+  
+  family = beta_family()
+)
+sim <- DHARMa::simulateResiduals(model_g)
+plot(sim)
+drop1(model_g, test = "Chisq")
+
+#interaction mean
+hist(before_after_infection_mean$interaction_length_mean)
+
+model_g<- glmmTMB(
+  log(interaction_length_mean) ~ infection*treatment + (1 | colony_name),
+  data = before_after_infection_mean,
+  family = gaussian
+)
+sim <- DHARMa::simulateResiduals(model_g)
+plot(sim)
+
+drop1(model_g, test = "Chisq")
+
+emmeans(model_g, pairwise ~ infection|treatment, type = "response")
+
+#interaction sd
+
+hist(before_after_infection_mean$interaction_length_sd)
+
+model_g<- glmmTMB(
+  log(interaction_length_sd) ~ infection*treatment + (1 | colony_name),
+  data = before_after_infection_mean,
+  family = gaussian
+)
+sim <- DHARMa::simulateResiduals(model_g)
+plot(sim)
+
+drop1(model_g, test = "Chisq")
+
+emmeans(model_g, pairwise ~ infection|treatment, type = "response")
+
+
+##plot mean parameters that work on:
+infection_status<-c("before" = "gray75",
+                    "after" = "springgreen")
+for (param in parameters){
+
+  boxplot_means<-ggplot(before_after_infection_mean,
+                       aes(x = treatment,
+                           y = .data[[param]],
+                           color = colony_name,
+                           fill  = treatment,
+                           group = treatment
+                           )) +
+    geom_boxplot(aes(fill = treatment), alpha = 0.3)+
+  geom_point(aes(color = colony_name), size = 3)+
+   
+    scale_color_manual(
+      values = colony_colors
+    ) +
+    scale_fill_manual(
+      values = treatment_colors
+    ) +
+   labs(
+      x = "treatments",
+      y = param,
+      color = "colony:",
+      fill  = "treatment"
+    ) +
+    theme_minimal()
+  
+  ggsave(
+    filename = paste0("network_parameter_plots/exp1_12hs/5_mins/time_mean/raw_means/colorby_colony/" , param, ".png"),
+    plot = boxplot_means,
+    width = 10,
+    height = 5,
+    dpi = 300
+  )
+  
+}
+
+#####color by infection period
+
+for (param in parameters){
+  
+  boxplot_means<-ggplot(before_after_infection_mean,
+                        aes(x = treatment,
+                            y = .data[[param]],
+                            color = infection,
+                            fill  = treatment,
+                            group = treatment
+                        )) +
+    geom_boxplot(aes(fill = treatment), alpha = 0.3)+
+    geom_point(aes(color = infection), size = 2)+
+    
+    scale_color_manual(
+      values = infection_status
+    ) +
+    scale_fill_manual(
+      values = treatment_colors
+    ) +
+    labs(
+      x = "treatments",
+      y = param,
+      color = "infection:",
+      fill  = "treatment"
+    ) +
+    theme_minimal()
+  
+  ggsave(
+    filename = paste0("network_parameter_plots/exp1_12hs/5_mins/time_mean/raw_means/colorby_infection/" , param, ".png"),
+    plot = boxplot_means,
+    width = 10,
+    height = 5,
+    dpi = 300
+  )
+  
+}
+#
+
+for (param in parameters){
+  
+  boxplot_means<-ggplot(before_after_infection_mean,
+                        aes(x = treatment,
+                            y = .data[[param]],
+                            color = infection,
+                            fill  = treatment
+                        )) +
+    geom_boxplot(aes(fill = treatment), alpha = 0.3)+
+    geom_point(aes(color = infection), size = 2)+
+    
+    scale_color_manual(
+      values = infection_status
+    ) +
+    scale_fill_manual(
+      values = treatment_colors
+    ) +
+    labs(
+      x = "treatments",
+      y = param,
+      color = "infection:",
+      fill  = "treatment"
+    ) +
+    theme_minimal()
+  
+  ggsave(
+    filename = paste0("network_parameter_plots/exp1_12hs/5_mins/time_mean/raw_means/separateby_infection/" , param, ".png"),
+    plot = boxplot_means,
+    width = 10,
+    height = 5,
+    dpi = 300
+  )
+  
+}
+
+
 
 ################################
 #antlevel data plotting
@@ -1375,8 +2133,7 @@ delta <- mean_overtimes %>%
     cols = -c(colony_name, infection, globaltime),
     names_to = "parameter",
     values_to = "mean_value"
-  )
-%>%
+  )%>%
   pivot_wider(
     names_from = infection,
     values_from = mean_value
@@ -1416,3 +2173,4 @@ plot(sim)
 pairs <- emmeans(model_delta_snorm, pairwise ~ treatment, type = "response")
 stat_test <- pairs$contrasts
 stat_test
+
