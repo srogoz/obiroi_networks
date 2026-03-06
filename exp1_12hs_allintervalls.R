@@ -719,6 +719,10 @@ before_after_infection_a<-before_after_infection_merged %>% filter(treatment == 
 before_after_infection_b<-before_after_infection_merged %>% filter(treatment == "b")
 before_after_infection_ba<-before_after_infection_merged %>% filter(treatment == "ba")
 
+before_after_infection_mean<-before_after_infection_merged%>%group_by(globaltime, colony_name, treatment, infection)%>%summarise(across(where(is.numeric),~mean(.x, na.rm =TRUE)), .groups = "drop")
+#pre_post_comparison$infection<-ifelse(pre_post_comparison_a$globaltime == "fungus exp", "post", "pre")
+
+
 # look at each treatment seperately before and after infection for each parameter
 global_times<-c("0-1.25h", "1.25-2.5h","8.75h-10h", "10h-11.25h", "fungus exp")
 global_times_colors_a<-c("0-1.25h" = "cyan", 
@@ -1503,8 +1507,6 @@ emmeans(model_g, pairwise ~ treatment)
 ############
 #add infection marker
 
-before_after_infection_mean<-before_after_infection_merged%>%group_by(globaltime, colony_name, treatment, infection)%>%summarise(across(where(is.numeric),~mean(.x, na.rm =TRUE)), .groups = "drop")
-#pre_post_comparison$infection<-ifelse(pre_post_comparison_a$globaltime == "fungus exp", "post", "pre")
 
 for (param in parameters){
   png(file= paste0("network_parameter_plots/exp1_12hs/5_mins/time_mean/hist_infection/", param, ".png"),
