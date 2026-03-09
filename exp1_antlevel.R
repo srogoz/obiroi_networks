@@ -1,5 +1,6 @@
 #antlevel data plotting
 ################################
+library(tidyr)
 
 antlevel_files<-c("network_parameters/exp1_12hs/5_mins/1_15/ANTLEVEL_allintervalls_strength_mean26022026.csv",
                   "network_parameters/exp1_12hs/5_mins/16_30/ANTLEVEL_allintervalls_strength_mean26022026.csv",
@@ -28,7 +29,7 @@ antlevel_data_unmerged<-lapply(antlevel_data_unmerged, function(df){
 
 
 antlevel_data_merged<-bind_rows(antlevel_data_unmerged)
-library(tidyr)
+
 
 antlevel_data<- antlevel_data_merged%>%
   pivot_longer(
@@ -105,16 +106,28 @@ antdelta_4 <- antlevel_4 %>%
 
 #dim= colony 24 x ants 16 x datapoints 4 ~1536
 antlevel_delta <- bind_rows(antdelta_4, antdelta_3, antdelta_2, antdelta_1)
-antlevel_delta<-antlevel_delta%>%mutate(for ant in )
-##plot ants in colony levels
-boxplot_delta<-ggplot(before_after_infection_delta,
-                      aes(x = treatment,
+
+##plot  deltas for ants in different colonies
+#mark exposed ant and genotype
+infection_ant_colors<-c("exposed" = "springgreen", "nestmate" = "blue")
+param<-"strength_mean"
+for (colony in selected_colonies_dot){
+  
+single_colony<-antlevel_delta|>filter(colony_name == colony)
+single_colony$color <- ifelse(
+  single_colony$ant %in% exposed_ants_plot[[colony]],
+  "exposed",
+  "nestmate"
+)
+
+boxplot_delta<-ggplot(single_colony,
+                      aes(x = ant,
                           y = .data[[param]],
-                          color = colony_name,
-                          fill  = treatment,
-                          group = treatment
+                          color = color,
+                          fill  = genotype,
+                          group = ant
                       )) +
-  geom_boxplot(aes(fill = treatment), alpha = 0.3)+
+  geom_boxplot( alpha = 0.3)+
   geom_point( size = 2)+
   # geom_signif(
   #   comparisons = comparisons,
@@ -122,18 +135,167 @@ boxplot_delta<-ggplot(before_after_infection_delta,
   #   y_position = c( 0.03, 0.04, 0.05)
   # )+
   scale_color_manual(
-    values = colony_colors
+    values = infection_ant_colors
   ) +
   scale_fill_manual(
-    values = treatment_colors
+    values = anttypes_colors
   ) +
   labs(
-    x = "treatments",
-    y = param_name,
+    title = colony,
+    x = "ants",
+    y = paste0(param,"_delta" ),
     color = "colony:",
-    fill  = "treatment"
+    fill  = "genotype"
   ) +
   theme_minimal()
+
+ggsave(
+  filename = paste0("network_parameter_plots/exp1_12hs/5_mins/time_mean/single_ants/delta_exposed_marked/" , colony, ".png"),
+  plot = boxplot_delta,
+  width = 10,
+  height = 5,
+  dpi = 300
+)
+}
+
+##plot direct!! parameter values for ants in different colonies
+#mark exposed ant and genotype
+infection_ant_colors<-c("exposed" = "springgreen", "nestmate" = "blue")
+param<-"strength_mean"
+
+
+for (colony in selected_colonies_dot){
+  
+  single_colony<-antlevel_data_mean|>filter(colony_name == colony)
+  #position of infected ant
+  exposed_ant<-exposed_ants_plot[colony]
+  position_exposed<-which(levels(factor(single_colony$ant)) == exposed_ant)
+  single_colony$color <- ifelse(
+    single_colony$ant %in% exposed_ants_plot[[colony]],
+    "exposed",
+    "nestmate"
+  )
+  single_colony$infection <- ifelse(
+    single_colony$globaltime == "fungal exp",
+    "after",
+    "before"
+  )
+  
+  if (single_colony$puremixed[1]=="m"){
+  boxplot_delta<-ggplot(single_colony,
+                        aes(x = ant,
+                            y = .data[[param]],
+                            color = infection,
+                            group = ant
+                        )) +
+    geom_rect(
+      xmin = -Inf,
+      xmax = 8.5,     # halfway point (depends on number of ants)
+      ymin = -Inf,
+      ymax = Inf,
+      fill = "lightpink",
+      alpha = 0.2
+    ) +
+    geom_rect(
+      xmin = 8.5,
+      xmax = Inf,     # halfway point (depends on number of ants)
+      ymin = -Inf,
+      ymax = Inf,
+      fill = "cyan",
+      alpha = 0.2
+    ) +
+    geom_rect(
+      xmin = (position_exposed-0.5),
+      xmax = (position_exposed+0.5),    
+      ymin = -Inf,
+      ymax = Inf,
+      fill = "springgreen",
+      alpha = 0.2
+    )+
+    geom_boxplot( alpha = 0.3)+
+    geom_point( size = 2)+
+    # geom_signif(
+    #   comparisons = comparisons,
+    #   annotations = labels,
+    #   y_position = c( 0.03, 0.04, 0.05)
+    # )+
+    scale_color_manual(
+      values = infection_status
+    ) +
+    # scale_fill_manual(
+    #   values = anttypes_colors
+    # ) +
+    
+    labs(
+      title = colony,
+      x = "ants",
+      y = param,
+      color = "colony:",
+      #fill  = "genotype"
+    ) +
+    theme_minimal()
+  
+ 
+  ggsave(
+    filename = paste0("network_parameter_plots/exp1_12hs/5_mins/time_mean/single_ants/strength_pre_post/" , colony, ".png"),
+    plot = boxplot_delta,
+    width = 10,
+    height = 5,
+    dpi = 300
+  )
+  }
+  else{
+    boxplot_delta<-ggplot(single_colony,
+                          aes(x = ant,
+                              y = .data[[param]],
+                              color = infection,
+                              group = ant
+                          )) +
+     
+      geom_rect(
+        xmin = (position_exposed-0.5),
+        xmax = (position_exposed+0.5),    
+        ymin = -Inf,
+        ymax = Inf,
+        fill = "springgreen",
+        alpha = 0.2
+      )+
+      geom_boxplot( alpha = 0.3)+
+      geom_point( size = 2)+
+      # geom_signif(
+      #   comparisons = comparisons,
+      #   annotations = labels,
+      #   y_position = c( 0.03, 0.04, 0.05)
+      # )+
+      scale_color_manual(
+        values = infection_status
+      ) +
+      # scale_fill_manual(
+      #   values = anttypes_colors
+      # ) +
+      
+      labs(
+        title = colony,
+        x = "ants",
+        y =param,
+        color = "colony:",
+        #fill  = "genotype"
+      ) +
+      theme_minimal()
+    
+    
+    ggsave(
+      filename = paste0("network_parameter_plots/exp1_12hs/5_mins/time_mean/single_ants/strength_pre_post/" , colony, ".png"),
+      plot = boxplot_delta,
+      width = 10,
+      height = 5,
+      dpi = 300
+    )
+  }
+}
+
+
+
 #########################
 #plot values for all ants
 #########################
