@@ -9,6 +9,12 @@ selected_colonies<-list(
   "ba16-1","ba16-2", "ba16-3", "ba16-4", "ba16-5",  "ba16-6","ba16-7","ba16-8"
 )
 
+selected_colonies_dot<-list(
+  "a16.1", "a16.2", "a16.3", "a16.4","a16.5","a16.6","a16.7", "a16.8",
+  "b16.1", "b16.2", "b16.3", "b16.4", "b16.5", "b16.6", "b16.7","b16.8",
+  "ba16.1","ba16.2", "ba16.3", "ba16.4", "ba16.5",  "ba16.6","ba16.7","ba16.8"
+)
+
 #EXP1 12hs
 present_ants_list<-list( "a16-1" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
                          "a16-2" = c("BB", "BG", "BO", "BP", "GB", "GG", "GO", "GP", "OB", "OG", "OO", "OP", "PB", "PG", "PO", "PP"),
@@ -159,6 +165,33 @@ exposed_ants_string <-c(
   "BB_ba16.8"
 )
 
+exposed_ants_plot <-c(
+  "a16.1" ="OP",
+  "a16.2" = "BP",
+  "a16.3" = "OO",
+  "a16.4" = "BO",
+  "a16.5" = "OG",
+  "a16.6" = "BG",
+  "a16.7" = "OB",
+  "a16.8" = "BB",
+  "b16.1" = "PP",
+  "b16.2" = "GP",
+  "b16.3" = "PO",
+  "b16.4" = "GO",
+  "b16.5" = "PG",
+  "b16.6" = "GG",
+  "b16.7" = "PB",
+  "b16.8" = "GB",
+  "ba16.1" = "OP",
+  "ba16.2" = "PP",
+  "ba16.3" = "OG",
+  "ba16.4" = "GO", 
+  "ba16.5" = "GG",
+  "ba16.6" = "PB",
+  "ba16.7" = "GP",
+  "ba16.8" = "BB"
+)
+
 parameters <-c("total_number_interactions", "total_sum_of_interactions", "strength_mean", "strength_sd", "interaction_length_mean", "interaction_length_sd", "waiting_time_mean", "waiting_time_sd", "burstiness", "density_aggr", "global_eff", "assortativity", "mean_distance", "clustering_global")
 
 #plot colors
@@ -167,6 +200,15 @@ treatment_colors<-c(
   "b" = "#fc0536",
   "ba" = "#db05fc"
 )
+
+anttypes_colors<-c(
+  "a" = "#05e0fc",
+  "b" = "#fc0536"
+  
+)
+
+infection_status<-c("before" = "gray75",
+                    "after" = "seagreen")
 
 colony_colors <-c(
   "a16-1" = "blue",
