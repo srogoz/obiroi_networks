@@ -1,5 +1,4 @@
 ###time sequence for infected in 5 min intervalls
-
 library(sna)
 library(tsna)
 #library(ndtv)
@@ -875,8 +874,6 @@ for (param in parameters){
 
 folder_path_timeplots<-"network_parameter_plots/exp2_12hs/5mins/time_continuum/overlays/"
 for (param in parameters){
- 
-  
   summary_b <- before_after_infection_b|>
     group_by(globaltime, time_interval) |>
     summarise(
@@ -914,10 +911,10 @@ for (param in parameters){
       .groups = "drop"
     )
   
-  min_range<- min(c(summary_a$mean_val-summary_a$se_val, summary_b$mean_val-summary_b$se_val, summary_ba$mean_val-summary_ba$se_val))
+  min_range<- min(c(summary_B$mean_val-summary_B$se_val, summary_bA$mean_val-summary_bA$se_val, summary_bB$mean_val-summary_bB$se_val, summary_b$mean_val-summary_b$se_val))
   
   
-  max_range<- max(c(summary_a$mean_val+summary_a$se_val, summary_b$mean_val+summary_b$se_val, summary_ba$mean_val+summary_ba$se_val))
+  max_range<- max(c(summary_bA$mean_val+summary_bA$se_val, summary_b$mean_val+summary_b$se_val, summary_bB$mean_val+summary_bB$se_val, summary_B$mean_val+summary_B$se_val))
   
   
   comparisonplot_b<-ggplot(summary_b,
@@ -978,12 +975,12 @@ for (param in parameters){
     scale_fill_manual(
       values = global_times_colors_B
     ) +
-    coord_cartesian(ylim = c(100, 1000))+
+    coord_cartesian(ylim = c(min_range, max_range))+
     labs(
-      x = "time [5min intervalls]",
+      x = "time increments [5 min]",
       y = param,
-      color = "timepoint",
-      fill  = "timepoint"
+      color = "extracted from:",
+      fill  = "extracted from:"
     ) +
     theme_minimal()+
     theme(
@@ -1015,12 +1012,12 @@ for (param in parameters){
     scale_fill_manual(
       values = global_times_colors_bB
     ) +
-    coord_cartesian(ylim = c(100, 1000))+
+    coord_cartesian(ylim = c(min_range, max_range))+
     labs(
-      x = "time [5min intervalls]",
+      x = "time increments [5 min]",
       y = param,
-      color = "Time",
-      fill  = "Time"
+      color = "extracted from:",
+      fill  = "extracted from:"
     ) +
     theme_minimal()+
     theme(
@@ -1052,12 +1049,12 @@ for (param in parameters){
     scale_fill_manual(
       values = global_times_colors_bA
     ) +
-    coord_cartesian(ylim = c(100, 1000))+
+    coord_cartesian(ylim = c(min_range, max_range))+
     labs(
-      x = "time [5min intervalls]",
+      x = "time increments [5 min]",
       y = param,
-      color = "Time",
-      fill  = "Time"
+      color = "extracted from:",
+      fill  = "extracted from:"
     ) +
     theme_minimal()+
     theme(
@@ -1069,14 +1066,18 @@ for (param in parameters){
   
   #combine into one plot with same legend
   
+  # grid_plot<-(comparisonplot_b| comparisonplot_B| comparisonplot_bB|comparisonplot_bA) +
+  #   plot_layout(ncol=2,nrow=2, guides = "collect", axes = "collect_y" ) &
+  #   theme(legend.position = "bottom")
+  # 
   grid_plot<-(comparisonplot_b| comparisonplot_B| comparisonplot_bB|comparisonplot_bA) +
-    plot_layout(ncol=2,nrow=2, guides = "collect", axes = "collect_y" ) &
-    theme(legend.position = "bottom")
+    plot_layout( axes = "collect" ) 
+   
   
   ggsave(
     filename = paste0(folder_path_timeplots, "/comparison/", param,"_","overlaybeforeafterinf_ALL.png"),
     plot = grid_plot,
-    width = 12,
+    width = 30,
     height = 5,
     dpi = 300
   )
@@ -1085,24 +1086,157 @@ for (param in parameters){
   
 }
 
+#########
+#plot only infection period overlay for all 4 treatments
+#########
+folder_path_timeplots<-"network_parameter_plots/exp2_inf/5mins/time_mean/"
+infection_data<-before_after_infection_merged%>%filter(infection == "after")
 
-#############################
-#############################
-library(lme4)
+for (param in parameters){
 
-hist (before_after_infection_a$strength_mean)
+  summary_df <- infection_data |>
+    group_by(treatment, time_interval) |>
+    summarise(
+      mean_val = mean(.data[[param]], na.rm = TRUE),
+      sd_val   = sd(.data[[param]], na.rm = TRUE),
+      n             = n(),
+      se_val   = sd_val / sqrt(n),
+      .groups = "drop"
+    )
+  
+  overlay_inf_plot<-ggplot(summary_df,
+                       aes(x = time_interval,
+                           y = mean_val,
+                           color = treatment,
+                           fill  = treatment
+                          )) +
+    geom_line(linewidth = 1) +
+    geom_ribbon(
+      aes(
+        ymin = mean_val - se_val,
+        ymax = mean_val + se_val
+      ),
+      alpha = 0.25,
+      color = NA
+    ) +
+    scale_color_manual(
+      values = treatment_colors
+    ) +
+    scale_fill_manual(
+      values = treatment_colors
+    ) +
+    labs(
+      x = "time increments [5min]",
+      y = param,
+      color = "mean over 8 \n colony replicates",
+     fill= "sd" ) +
+    theme_minimal()
+  
+  ggsave(
+    filename = paste0(folder_path_timeplots, param,"_","infection_overlay.png"),
+    plot = overlay_inf_plot,
+    width = 10,
+    height = 5,
+    dpi = 300
+  )
+  
+}
 
-model<-lmer(data = before_after_infection_a, formula = strength_mean ~ globaltime + (1|colony_name))
-model<-glm
+#boxplots of values
 
-emmeans(model, pairwise ~ globaltime)
+for (param in parameters){
+  
+
+ 
+  boxplot_inf_plot<-ggplot(infection_data,
+                           aes(x = treatment,
+                               y = .data[[param]],
+                               color = colony_name,
+                               fill  = treatment,
+                               group = treatment
+                           )) +
+    geom_boxplot(alpha= 0.6)+
+   geom_jitter()+
+    scale_color_manual(
+      values = colony_colors
+    ) +
+    scale_fill_manual(
+      values = treatment_colors
+    ) +
+    labs(
+      x = "treatments",
+      y = param,
+      color = "15 x 5 min per \n colony",
+      fill= "treatment"
+     ) +
+    theme_minimal()
+  
+  ggsave(
+    filename = paste0("network_parameter_plots/exp2_inf/5mins/time_mean/boxplot/", param,"_","infection_boxplot.png"),
+    plot = boxplot_inf_plot,
+    width = 10,
+    height = 5,
+    dpi = 300
+  )
+  
+}
+
+#boxplots of means
+infection_mean<-infection_data%>%group_by(colony_name, treatment)%>%summarise(
+  across(where(is.numeric), ~ mean(.x, na.rm = TRUE)),
+  .groups = "drop"
+)
+
+for (param in parameters){
+  png(file= paste0("network_parameter_plots/exp2_inf/5mins/time_mean/hist_boxplot_means/", param, ".png"),
+      width=600, height=350)
+  hist(infection_mean[[param]], xlab = param , col = "purple", main="")
+  dev.off()
+}
+
+# plot boxplot of means
+for (param in parameters){
+
+boxplot_inf_mean_plot<-ggplot(infection_mean,
+                         aes(x = treatment,
+                             y = .data[[param]],
+                             color = colony_name,
+                             fill  = treatment,
+                             group = treatment
+                         )) +
+  geom_boxplot(alpha= 0.6)+
+  geom_jitter()+
+  scale_color_manual(
+    values = colony_colors
+  ) +
+  scale_fill_manual(
+    values = treatment_colors
+  ) +
+  labs(
+    x = "treatments",
+    y = param,
+    color = "1 x 5 min mean per \n colony",
+    fill= "treatment"
+  ) +
+  theme_minimal()
+
+ggsave(
+  filename = paste0("network_parameter_plots/exp2_inf/5mins/time_mean/boxplots_means/", param,"_","infection_boxplot.png"),
+  plot = boxplot_inf_mean_plot,
+  width = 10,
+  height = 5,
+  dpi = 300
+)
+
+}
 
 #############################
 #glmm
 #############################
+hist(infection_mean$strength_mean)
 model_g<- glmmTMB(
-  strength_mean ~ globaltime*treatment + (1 | colony_name),
-  data = before_after_infection_merged, 
+  log(strength_mean) ~ treatment,
+  data = infection_mean, 
   #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
   family = gaussian()
 )
@@ -1110,14 +1244,193 @@ model_g<- glmmTMB(
 sim <- DHARMa::simulateResiduals(model_g)
 plot(sim)
 
+drop1(model_g, test = "Chisq")
 
-AIC(model_g)
+emmeans(model_g, pairwise ~ treatment )
+##density_aggr
+hist(infection_mean$density_aggr)
+model_d<- glmmTMB(
+  log(density_aggr) ~ treatment,
+  data = infection_mean, 
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = gaussian()
+)
 
-emm_trt <- emmeans(model_gt, ~ genotype*puremixed)
-pairs(emm_trt, adjust = "tukey")
+sim <- DHARMa::simulateResiduals(model_d)
+plot(sim)
 
-emmeans(model_g, pairwise ~ treatment | globaltime)
-emmeans(model_g, pairwise ~ globaltime | treatment)
+drop1(model_d, test = "Chisq")
+
+emmeans(model_d, pairwise ~ treatment )
+
+#interactionlength_mean
+hist(infection_mean$interaction_length_mean)
+model_lm<- glmmTMB(
+  log(interaction_length_mean) ~ treatment,
+  data = infection_mean, 
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = gaussian()
+)
+
+sim <- DHARMa::simulateResiduals(model_lm)
+plot(sim)
+
+drop1(model_lm, test = "Chisq")
+
+emmeans(model_lm, pairwise ~ treatment )
+
+#interaction length sd
+hist(infection_mean$interaction_length_sd)
+model_lsd<- glmmTMB(
+  interaction_length_sd ~ treatment,
+  data = infection_mean, 
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = gaussian()
+)
+
+sim <- DHARMa::simulateResiduals(model_lsd)
+plot(sim)
+
+drop1(model_lsd, test = "Chisq")
+
+emmeans(model_lsd, pairwise ~ treatment )
+
+#global_eff
+hist(infection_mean$global_eff)
+model_ge<- glmmTMB(
+  global_eff ~ treatment,
+  data = infection_mean, 
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = gaussian()
+)
+
+sim <- DHARMa::simulateResiduals(model_ge)
+plot(sim)
+
+drop1(model_ge, test = "Chisq")
+
+#clustering coeff global
+hist(infection_mean$clustering_global)
+model_cg<- glmmTMB(
+  clustering_global ~ treatment,
+  data = infection_mean, 
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = gaussian()
+)
+sim <- DHARMa::simulateResiduals(model_cg)
+plot(sim)
+
+drop1(model_cg, test = "Chisq")
+
+#mean distance
+
+hist(infection_mean$mean_distance)
+model_md<- glmmTMB(
+  mean_distance ~ treatment,
+  data = infection_mean, 
+  dispformula = ~1,
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = Gamma(link = "log")
+)
+sim <- DHARMa::simulateResiduals(model_md)
+plot(sim)
+
+drop1(model_md, test = "Chisq")
+
+#waiting_time_mean
+hist(infection_mean$waiting_time_mean)
+model_wtm<- glmmTMB(
+  log(waiting_time_mean) ~ treatment,
+  data = infection_mean, 
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = gaussian()
+)
+
+model_wtm2<- glmmTMB(
+  waiting_time_mean ~ treatment,
+  data = infection_mean, 
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = Gamma(link = "log")
+)
+sim <- DHARMa::simulateResiduals(model_wtm2)
+plot(sim)
+ AIC(model_wtm, model_wtm2)
+drop1(model_wtm, test = "Chisq")
+
+# interaction sum
+hist(infection_mean$total_sum_of_interactions)
+model_si<- glmmTMB(
+  total_sum_of_interactions ~ treatment,
+  data = infection_mean, 
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = gaussian()
+)
+sim <- DHARMa::simulateResiduals(model_si)
+plot(sim)
+drop1(model_si, test = "Chisq")
+
+#total number interactions
+hist(infection_mean$total_number_interactions)
+model_ni<- glmmTMB(
+  total_number_interactions ~ treatment,
+  data = infection_mean, 
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = gaussian()
+)
+sim <- DHARMa::simulateResiduals(model_ni)
+plot(sim)
+drop1(model_ni, test = "Chisq")
+
+##########
+#comparison between treatments
+##########
+no_infection_mean<-before_after_infection_merged%>%filter(infection != "after")%>%group_by(colony_name, treatment, globaltime)%>%summarise(
+  across(where(is.numeric), ~ mean(.x, na.rm = TRUE)),
+  .groups = "drop"
+)
+
+for (param in parameters){
+  png(file= paste0("network_parameter_plots/exp2_12hs/5mins/time_continuum/overlays/comparison/hist/", param, ".png"),
+      width=600, height=350)
+  hist(no_infection_mean[[param]], xlab = param , col = "purple", main="")
+  dev.off()
+}
+
+#strength_mean
+hist(no_infection_mean$strength_mean)
+model_g<- glmmTMB(
+  strength_mean ~ treatment + (1|colony_name),
+  data = no_infection_mean, 
+  dispformula = ~treatment,
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = gaussian()
+)
+
+sim <- DHARMa::simulateResiduals(model_g)
+plot(sim)
+
+drop1(model_g, test = "Chisq")
+
+emmeans(model_g, pairwise ~ treatment )
+
+#density aggr
+hist(no_infection_mean$density_aggr)
+model_d<- glmmTMB(
+  density_aggr ~ treatment + (1|colony_name),
+  data = no_infection_mean, 
+  dispformula = ~treatment,
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = gaussian()
+)
+
+sim <- DHARMa::simulateResiduals(model_d)
+plot(sim)
+
+drop1(model_d, test = "Chisq")
+
+emmeans(model_g, pairwise ~ treatment )
+
+#global_effectiveness
 
 ################################
 #antlevel data plotting
