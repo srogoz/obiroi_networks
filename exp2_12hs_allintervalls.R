@@ -1231,7 +1231,7 @@ ggsave(
 }
 
 #############################
-#glmm
+#glmm infection
 #############################
 hist(infection_mean$strength_mean)
 model_g<- glmmTMB(
@@ -1431,8 +1431,503 @@ drop1(model_d, test = "Chisq")
 emmeans(model_g, pairwise ~ treatment )
 
 #global_effectiveness
+hist(no_infection_mean$global_eff)
+model_ge<- glmmTMB(
+  global_eff ~ treatment + (1|colony_name),
+  data = no_infection_mean, 
+  
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = gaussian()
+)
 
-################################
+sim <- DHARMa::simulateResiduals(model_ge)
+plot(sim)
+
+drop1(model_ge, test = "Chisq")
+
+emmeans(model_ge, pairwise ~ treatment )
+
+#mean distance
+hist(no_infection_mean$mean_distance)
+model_md<- glmmTMB(
+  mean_distance ~ treatment + (1|colony_name),
+  data = no_infection_mean, 
+  #dispformula = ~1,
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = Gamma(link = "log")
+)
+
+sim <- DHARMa::simulateResiduals(model_md)
+plot(sim)
+
+drop1(model_md, test = "Chisq")
+
+#clustering_global
+hist(no_infection_mean$clustering_global)
+model_cg<- glmmTMB(
+  clustering_global ~ treatment + (1|colony_name),
+  data = no_infection_mean, 
+  #dispformula = ~1,
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = beta_family()
+)
+
+sim <- DHARMa::simulateResiduals(model_cg)
+plot(sim)
+
+drop1(model_cg, test = "Chisq")
+
+#interactionlength_mean
+hist(no_infection_mean$interaction_length_mean)
+model_im<- glmmTMB(
+  interaction_length_mean ~ treatment + (1|colony_name),
+  data = no_infection_mean, 
+  #dispformula = ~1,
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = gaussian()
+)
+
+sim <- DHARMa::simulateResiduals(model_im)
+plot(sim)
+
+drop1(model_im, test = "Chisq")
+
+#waitingtime
+hist(no_infection_mean$waiting_time_mean)
+model_wtm<- glmmTMB(
+  waiting_time_mean ~ treatment + (1|colony_name),
+  data = no_infection_mean, 
+  #dispformula = ~1,
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = gaussian()
+)
+
+sim <- DHARMa::simulateResiduals(model_wtm)
+plot(sim)
+
+drop1(model_wtm, test = "Chisq")
+#total sum interactions
+hist(no_infection_mean$total_sum_of_interactions)
+model_ts<- glmmTMB(
+  log(total_sum_of_interactions) ~ treatment + (1|colony_name),
+  data = no_infection_mean, 
+ dispformula = ~treatment,
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = gaussian()
+)
+
+sim <- DHARMa::simulateResiduals(model_ts)
+plot(sim)
+
+drop1(model_ts, test = "Chisq")
+
+#total number of interactions
+hist(no_infection_mean$total_number_interactions)
+model_tn<- glmmTMB(
+  log(total_number_interactions) ~ treatment + (1|colony_name),
+  data = no_infection_mean, 
+ dispformula = ~1,
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = gaussian()
+)
+
+sim <- DHARMa::simulateResiduals(model_tn)
+plot(sim)
+
+drop1(model_tn, test = "Chisq")
+
+#interactionlength sd
+hist(no_infection_mean$interaction_length_sd)
+model_isd<- glmmTMB(
+  interaction_length_sd ~ treatment + (1|colony_name),
+  data = no_infection_mean, 
+  
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = gaussian()
+)
+
+sim <- DHARMa::simulateResiduals(model_isd)
+plot(sim)
+
+drop1(model_isd, test = "Chisq")
+
+###################
+#compare before and after 
+###################
+
+for (param in parameters){
+  png(file= paste0("network_parameter_plots/exp2_12hs/5mins/time_continuum/overlays/comparison/hist_prepostexp/", param, ".png"),
+      width=600, height=350)
+  hist(before_after_infection_mean[[param]], xlab = param , col = "purple", main="")
+  dev.off()
+}
+
+before_after_infection_mean<-before_after_infection_merged%>%group_by(colony_name, treatment, globaltime)%>%summarise(
+  across(where(is.numeric), ~ mean(.x, na.rm = TRUE)),
+  .groups = "drop"
+)
+before_after_infection_mean$infection<-ifelse(before_after_infection_mean$globaltime == "fungal exp", "after", "before")
+
+#strength mean
+hist(before_after_infection_mean$strength_mean)
+model_s<- glmmTMB(
+  strength_mean ~ treatment*infection + (1|colony_name),
+  data = before_after_infection_mean, 
+  dispformula = ~treatment*infection,
+  #ziformula = ~1,
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = Gamma(link = "log")
+)
+
+sim <- DHARMa::simulateResiduals(model_s)
+plot(sim)
+
+model_s1<- glmmTMB(
+  log(strength_mean) ~ treatment*infection + (1|colony_name),
+  data = before_after_infection_mean, 
+  dispformula = ~treatment,
+  #ziformula = ~1,
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = gaussian()
+)
+
+sim <- DHARMa::simulateResiduals(model_s1)
+plot(sim)
+
+model_s2<- glmmTMB(
+  log(strength_mean) ~ treatment*infection + (1|colony_name),
+  data = before_after_infection_mean, 
+  #dispformula = ~treatment*infection,
+  #ziformula = ~1,
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = t_family()
+)
+
+sim <- DHARMa::simulateResiduals(model_s2)
+plot(sim)
+
+AIC(model_s1, model_s, model_s2) #uselognormal
+drop1(model_s1, test = "Chisq")
+emmeans(model_s2, pairwise~infection|treatment, type= "response")
+#strength_sd
+hist(before_after_infection_mean$strength_sd)
+model_ssd<- glmmTMB(
+  log(strength_sd) ~ treatment*infection + (1|colony_name),
+  data = before_after_infection_mean, 
+  #dispformula = ~treatment*infection,
+  #ziformula = ~1,
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = gaussian()
+)
+
+sim <- DHARMa::simulateResiduals(model_ssd)
+plot(sim)
+
+model_ssd1<- glmmTMB(
+  strength_sd ~ treatment*infection + (1|colony_name),
+  data = before_after_infection_mean, 
+  #dispformula = ~treatment*infection,
+  #ziformula = ~1,
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = gaussian()
+)
+
+sim <- DHARMa::simulateResiduals(model_ssd1)
+plot(sim)
+
+AIC(model_ssd)
+drop1(model_ssd, test = "Chisq")
+emmeans(model_ssd, pairwise~infection|treatment, type= "response")
+
+#density_aggr
+hist(before_after_infection_mean$density_aggr)
+model_d<- glmmTMB(
+  density_aggr ~ treatment*infection + (1|colony_name),
+  data = before_after_infection_mean, 
+  #dispformula = ~treatment*infection,
+  #ziformula = ~1,
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = gaussian()
+)
+
+sim <- DHARMa::simulateResiduals(model_d)
+plot(sim)
+drop1(model_d, test = "Chisq")
+emmeans(model_d, pairwise~infection|treatment, type= "response")
+
+#global_eff
+hist(before_after_infection_mean$global_eff)
+model_ge<- glmmTMB(
+  global_eff ~ treatment*infection + (1|colony_name),
+  data = before_after_infection_mean, 
+  #dispformula = ~treatment*infection,
+  #ziformula = ~1,
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = gaussian()
+)
+
+sim <- DHARMa::simulateResiduals(model_ge)
+plot(sim)
+drop1(model_ge, test = "Chisq")
+emmeans(model_ge, pairwise~infection|treatment, type= "response")
+
+#clustering_global
+hist(before_after_infection_mean$clustering_global)
+model_cg<- glmmTMB(
+  clustering_global ~ treatment*infection + (1|colony_name),
+  data = before_after_infection_mean, 
+  #dispformula = ~treatment*infection,
+  #ziformula = ~1,
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = beta_family()
+)
+
+sim <- DHARMa::simulateResiduals(model_cg)
+plot(sim)
+drop1(model_cg, test = "Chisq")
+emmeans(model_cg, pairwise~infection|treatment, type= "response")
+
+#mean_distance
+hist(before_after_infection_mean$mean_distance)
+model_md<- glmmTMB(
+  mean_distance ~ treatment*infection + (1|colony_name),
+  data = before_after_infection_mean, 
+  #dispformula = ~treatment*infection,
+  #ziformula = ~1,
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = Gamma(link= "log")
+)
+
+sim <- DHARMa::simulateResiduals(model_md)
+plot(sim)
+
+model_md1<- glmmTMB(
+  mean_distance ~ treatment+infection + (1|colony_name),
+  data = before_after_infection_mean, 
+  #dispformula = ~treatment*infection,
+  #ziformula = ~1,
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = Gamma(link= "log")
+)
+
+sim <- DHARMa::simulateResiduals(model_md1)
+plot(sim)
+
+model_md2<- glmmTMB(
+  mean_distance ~ infection + (1|colony_name),
+  data = before_after_infection_mean, 
+  #dispformula = ~treatment*infection,
+  #ziformula = ~1,
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = Gamma(link= "log")
+)
+
+sim <- DHARMa::simulateResiduals(model_md2)
+plot(sim)
+drop1(model_md2, test = "Chisq")
+
+AIC(model_md, model_md1, model_md2)
+
+emmeans(model_md1, pairwise~infection|treatment, type= "response")
+
+#waiting_time
+hist(before_after_infection_mean$waiting_time_mean)
+model_wtm<- glmmTMB(
+  waiting_time_mean ~ treatment*infection + (1|colony_name),
+  data = before_after_infection_mean, 
+  #dispformula = ~treatment*infection,
+  #ziformula = ~1,
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = gaussian()
+)
+
+sim <- DHARMa::simulateResiduals(model_wtm)
+plot(sim)
+
+model_wtm1<- glmmTMB(
+  log(waiting_time_mean) ~ treatment*infection + (1|colony_name),
+  data = before_after_infection_mean, 
+  #dispformula = ~treatment*infection,
+  #ziformula = ~1,
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = gaussian()
+)
+
+sim <- DHARMa::simulateResiduals(model_wtm1)
+plot(sim)
+
+model_wtm2<- glmmTMB(
+  waiting_time_mean ~ treatment*infection + (1|colony_name),
+  data = before_after_infection_mean, 
+  #dispformula = ~treatment*infection,
+  #ziformula = ~1,
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = Gamma(link = "log")
+)
+
+sim <- DHARMa::simulateResiduals(model_wtm2)
+plot(sim)
+
+AIC(model_wtm, model_wtm1, model_wtm2)
+drop1(model_wtm1, test = "Chisq")
+
+model_wtm1_drop<- glmmTMB(
+  log(waiting_time_mean) ~ treatment+infection + (1|colony_name),
+  data = before_after_infection_mean, 
+  #dispformula = ~treatment*infection,
+  #ziformula = ~1,
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = gaussian()
+)
+
+model_wtm1_dropinf<- glmmTMB(
+  log(waiting_time_mean) ~ infection + (1|colony_name),
+  data = before_after_infection_mean, 
+  #dispformula = ~treatment*infection,
+  #ziformula = ~1,
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = gaussian()
+)
+
+sim <- DHARMa::simulateResiduals(model_wtm1_dropinf)
+plot(sim)
+drop1(model_wtm1_drop, test = "Chisq")
+emmeans(model_wtm1_drop, pairwise~infection|treatment, type= "response")
+
+#interaction_mean
+hist(before_after_infection_mean$interaction_length_mean)
+model_im<- glmmTMB(
+  log(interaction_length_mean) ~ treatment*infection + (1|colony_name),
+  data = before_after_infection_mean, 
+  #dispformula = ~treatment*infection,
+  #ziformula = ~1,
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = gaussian()
+)
+
+sim <- DHARMa::simulateResiduals(model_im)
+plot(sim)
+drop1(model_im, test = "Chisq")
+
+model_im_drop<- glmmTMB(
+  log(interaction_length_mean) ~ treatment+infection + (1|colony_name),
+  data = before_after_infection_mean, 
+  #dispformula = ~treatment*infection,
+  #ziformula = ~1,
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = gaussian()
+)
+
+sim <- DHARMa::simulateResiduals(model_im_drop)
+plot(sim)
+drop1(model_im_drop, test = "Chisq")
+emmeans(model_im_drop, pairwise~infection|treatment, type= "response")
+#interactiolength_sd
+hist(before_after_infection_mean$interaction_length_sd)
+model_is<- glmmTMB(
+  log(interaction_length_mean) ~ treatment*infection + (1|colony_name),
+  data = before_after_infection_mean, 
+  #dispformula = ~treatment*infection,
+  #ziformula = ~1,
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = gaussian()
+)
+
+sim <- DHARMa::simulateResiduals(model_is)
+plot(sim)
+drop1(model_im, test = "Chisq")
+model_is_drop<- glmmTMB(
+  log(interaction_length_mean) ~ treatment+infection + (1|colony_name),
+  data = before_after_infection_mean, 
+  #dispformula = ~treatment*infection,
+  #ziformula = ~1,
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = gaussian()
+)
+
+sim <- DHARMa::simulateResiduals(model_is_drop)
+plot(sim)
+
+drop1(model_is_drop, test="Chisq")
+emmeans(model_is_drop, pairwise~infection|treatment, type= "response")
+
+#total sum interactions
+hist(before_after_infection_mean$total_sum_of_interactions)
+model_ts<- glmmTMB(
+  total_sum_of_interactions ~ treatment*infection + (1|colony_name),
+  data = before_after_infection_mean, 
+  #dispformula = ~treatment*infection,
+  #ziformula = ~1,
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = gaussian()
+)
+
+sim <- DHARMa::simulateResiduals(model_ts)
+plot(sim)
+
+model_ts1<- glmmTMB(
+  log(total_sum_of_interactions) ~ treatment*infection + (1|colony_name),
+  data = before_after_infection_mean, 
+  #dispformula = ~treatment*infection,
+  #ziformula = ~1,
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = gaussian()
+)
+
+sim <- DHARMa::simulateResiduals(model_ts1)
+plot(sim)
+
+
+drop1(model_ts1, test = "Chisq")
+
+AIC(model_ts, model_ts1)
+
+model_ts_drop<- glmmTMB(
+  log(total_sum_of_interactions) ~ treatment+infection+ (1|colony_name),
+  data = before_after_infection_mean, 
+  dispformula = ~treatment*infection,
+  #ziformula = ~1,
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = gaussian()
+)
+
+sim <- DHARMa::simulateResiduals(model_ts_drop)
+plot(sim)
+
+drop1(model_ts_drop, test = "Chisq")
+
+emmeans(model_ts_drop, pairwise~infection|treatment, type= "response")
+
+#total number of interactions
+hist(before_after_infection_mean$total_number_interactions)
+model_tn<- glmmTMB(
+  log(interaction_length_mean) ~ treatment*infection + (1|colony_name),
+  data = before_after_infection_mean, 
+  #dispformula = ~treatment*infection,
+  #ziformula = ~1,
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = gaussian()
+)
+
+sim <- DHARMa::simulateResiduals(model_tn)
+plot(sim)
+drop1(model_tn, test = "Chisq")
+
+#drop interaction term
+model_tn_drop<- glmmTMB(
+  log(interaction_length_mean) ~ treatment+infection + (1|colony_name),
+  data = before_after_infection_mean, 
+  #dispformula = ~treatment*infection,
+  #ziformula = ~1,
+  #family = Gamma(link = log)# 'ensures is positive', right skewed (link = log)
+  family = gaussian()
+)
+
+sim <- DHARMa::simulateResiduals(model_tn_drop)
+plot(sim)
+drop1(model_tn_drop, test = "Chisq")
+emmeans(model_tn_drop, pairwise~infection|treatment, type= "response")
+
 #antlevel data plotting
 ################################
 
