@@ -7,6 +7,47 @@ selected_colonies<-list(
   "bA16-1","bA16-2", "bA16-3", "bA16-4", "bA16-5","bA16-6","bA16-7","bA16-8"
 )
 
+selected_colonies_dot<-list(
+  "B16.1", "B16.2", "B16.3", "B16.4","B16.5","B16.6","B16.7", "B16.8",
+  "b16.1", "b16.2", "b16.3", "b16.4", "b16.5", "b16.6", "b16.7","b16.8",
+  "bB16.1","bB16.2", "bB16.3", "bB16.4", "bB16.5","bB16.6","bB16.7","bB16.8",
+  "bA16.1","bA16.2", "bA16.3", "bA16.4", "bA16.5","bA16.6","bA16.7","bA16.8"
+)
+
+exposed_ants<- c("B16.1" = "PP",
+                 "B16.2" = "OO", 
+                 "B16.3" = "PG",
+                 "B16.4" = "GP",
+                 "B16.5" = "GO",
+                 "B16.6" = "GG",
+                 "B16.7" = "PG",
+                 "B16.8" = "OP",
+                  "b16.1" = "BP",
+                  "b16.2" = "PO",
+                  "b16.3" = "BO",
+                  "b16.4" = "PO",
+                  "b16.5" = "OO",
+                  "b16.6" = "OG",
+                  "b16.7" = "GO",
+                  "b16.8" = "PP",
+                  "bB16.1" = "OP",
+                  "bB16.2" = "GO",
+                  "bB16.3" = "OG",
+                  "bB16.4" = "BP",
+                  "bB16.5" = "BO",
+                  "bB16.6" = "PO",
+                  "bB16.7" = "BO",
+                  "bB16.8" = "GP",
+                  "bA16.1" = "GP",
+                  "bA16.2" = "GG",
+                  "bA16.3" = "PP",
+                  "bA16.4" = "PO",
+                  "bA16.5" = "PG",
+                  "bA16.6" = "OO",
+                  "bA16.7" = "OG",
+                  "bA16.8"= "BP"
+)
+
 parameters <-c("total_number_interactions", "total_sum_of_interactions", "strength_mean", "strength_sd", "interaction_length_mean", "interaction_length_sd", "waiting_time_mean", "waiting_time_sd", "burstiness", "density_aggr", "global_eff", "assortativity", "mean_distance", "clustering_global")
 
 
@@ -118,39 +159,6 @@ treatment_match<-list( "B16-1" = 1,
                        "bA16-7" = 4,
                        "bA16-8" = 4
 )
-bA_match<-list("BB" = "b",
-               "BG" = "b",
-               "BO" = "b",
-               "BP" = "b",
-               "GB" = "b",
-               "GG" = "b", 
-               "GO" = "b",
-               "GP" = "b", 
-               "OB" = "a",
-               "OG" = "a",
-               "OO" = "a",
-               "OP" = "a",
-               "PB" = "a",
-               "PG" = "a",
-               "PO" = "a",
-               "PP" = "a")
-
-bB_match<-list("BB" = "b",
-               "BG" = "b",
-               "BO" = "b",
-               "BP" = "b",
-               "GB" = "b",
-               "GG" = "b", 
-               "GO" = "b",
-               "GP" = "b", 
-               "OB" = "a",
-               "OG" = "a",
-               "OO" = "a",
-               "OP" = "a",
-               "PB" = "a",
-               "PG" = "a",
-               "PO" = "a",
-               "PP" = "a")
 
 #plot parameters
 global_times<-c("0-1.25h", "1.25-2.5h","8.75-10h", "10-11.25h", "fungal exp")
@@ -218,3 +226,76 @@ treatment_colors<-c("b" = "burlywood4",
                     "B" = "firebrick2",
                     "bA"= "magenta",
                     "bB"= "orange")
+
+anttypes_colors<-c("b"= "firebrick2",
+                   "B" = "burlywood4",
+                   "A"= "blue")
+
+anttype_match<-list()
+anttype_match[["bA"]]<-list("BB" = "A",
+                            "BG" = "A",
+                            "BO" = "A",
+                            "BP" = "A",
+                            "GB" = "A",
+                            "GG" = "A", 
+                            "GO" = "A",
+                            "GP" = "A", 
+                            "OB" = "b",
+                            "OG" = "b",
+                            "OO" = "b",
+                            "OP" = "b",
+                            "PB" = "b",
+                            "PG" = "b",
+                            "PO" = "b",
+                            "PP" = "b")
+
+anttype_match[["bB"]]<-list("BB" = "B",
+                            "BG" = "B",
+                            "BO" = "B",
+                            "BP" = "B",
+                            "GB" = "B",
+                            "GG" = "B", 
+                            "GO" = "B",
+                            "GP" = "B", 
+                            "OB" = "b",
+                            "OG" = "b",
+                            "OO" = "b",
+                            "OP" = "b",
+                            "PB" = "b",
+                            "PG" = "b",
+                            "PO" = "b",
+                            "PP" = "b")
+
+anttype_match[["B"]]<-list("BB" = "B",
+                           "BG" = "B",
+                           "BO" = "B",
+                           "BP" = "B",
+                           "GB" = "B",
+                           "GG" = "B", 
+                           "GO" = "B",
+                           "GP" = "B", 
+                           "OB" = "B",
+                           "OG" = "B",
+                           "OO" = "B",
+                           "OP" = "B",
+                           "PB" = "B",
+                           "PG" = "B",
+                           "PO" = "B",
+                           "PP" = "B")
+
+anttype_match[["b"]]<-list("BB" = "b",
+                           "BG" = "b",
+                           "BO" = "b",
+                           "BP" = "b",
+                           "GB" = "b",
+                           "GG" = "b", 
+                           "GO" = "b",
+                           "GP" = "b", 
+                           "OB" = "b",
+                           "OG" = "b",
+                           "OO" = "b",
+                           "OP" = "b",
+                           "PB" = "b",
+                           "PG" = "b",
+                           "PO" = "b",
+                           "PP" = "b")
